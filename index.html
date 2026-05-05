@@ -326,7 +326,7 @@ button{
             <div class="card">
 
                 <div class="label">
-                    📈 Profit
+                 📈 Profit
                 </div>
 
                 <div class="value green" id="profit">
@@ -377,7 +377,25 @@ button{
 
     <!-- ПРАВАЯ ЧАСТЬ -->
 
-    <div class="right">
+<div class="calc-box">
+
+<h3>Proyección inteligente</h3>
+
+<input type="number" id="amount" placeholder="Monto inicial">
+
+<input type="number" id="percent" placeholder="% mensual">
+
+<input type="number" id="months" placeholder="Meses">
+
+<button onclick="calculateProfit()">
+Calcular rendimiento
+</button>
+
+<div id="result"></div>
+
+</div>
+
+<div class="right">
 
         <div class="sphere-wrap">
 
