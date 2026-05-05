@@ -2,12 +2,10 @@
 <!-- Тип документа HTML5 -->
 
 <html lang="es">
-<!-- Язык сайта — испанский -->
 
 <head>
 
 <meta charset="UTF-8">
-<!-- Кодировка -->
 
 <title>Capital Inteligente</title>
 
@@ -23,6 +21,24 @@ body{
     font-family:Arial;
     color:white;
     overflow-x:hidden;
+    position:relative;
+}
+
+/* ФОНОВАЯ СЕТКА */
+
+body::before{
+    content:"";
+    position:fixed;
+    width:100%;
+    height:100%;
+
+    background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+
+    background-size:40px 40px;
+
+    z-index:-1;
 }
 
 /* ========================= */
@@ -41,7 +57,7 @@ body{
 /* ========================= */
 
 .left{
-    width:45%;
+    width:38%;
 }
 
 /* маленький текст */
@@ -62,8 +78,12 @@ body{
 /* заголовок */
 
 h1{
-    font-size:64px;
+    font-size:72px;
+    line-height:0.95;
     margin:20px 0;
+
+    text-shadow:
+    0 0 20px rgba(255,255,255,0.15);
 }
 
 /* описание */
@@ -71,6 +91,8 @@ h1{
 .desc{
     opacity:0.7;
     margin-bottom:20px;
+    font-size:15px;
+    line-height:1.5;
 }
 
 /* кнопка */
@@ -79,15 +101,20 @@ button{
     background:#00ffcc;
     border:none;
     padding:15px 30px;
-    border-radius:10px;
+    border-radius:12px;
     font-size:16px;
     cursor:pointer;
     transition:0.3s;
+
+    box-shadow:
+    0 0 20px rgba(0,255,200,0.2);
 }
 
 button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 0 20px rgba(0,255,200,0.35);
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 0 35px rgba(0,255,200,0.4);
 }
 
 /* ========================= */
@@ -97,15 +124,19 @@ button:hover{
 .prices{
     display:flex;
     gap:10px;
-    margin-top:20px;
+    margin-top:25px;
 }
 
 .prices span{
     background:#1a2335;
     padding:10px 15px;
-    border-radius:10px;
+    border-radius:12px;
     font-size:14px;
+
     border:1px solid rgba(255,255,255,0.05);
+
+    box-shadow:
+    0 0 20px rgba(0,255,200,0.04);
 }
 
 /* ========================= */
@@ -120,19 +151,48 @@ button:hover{
 }
 
 .card{
+    position:relative;
+    overflow:hidden;
+
     background:rgba(255,255,255,0.03);
+
     border:1px solid rgba(0,255,200,0.15);
-    border-radius:16px;
-    padding:18px 24px;
+
+    border-radius:18px;
+
+    padding:20px 24px;
+
     min-width:180px;
+
     backdrop-filter:blur(12px);
+
     transition:0.3s;
-    box-shadow:0 0 20px rgba(0,255,200,0.05);
+
+    box-shadow:
+    0 0 25px rgba(0,255,200,0.05);
+}
+
+.card::before{
+    content:"";
+
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    background:rgba(0,255,200,0.04);
+
+    border-radius:50%;
+
+    top:-40px;
+    right:-40px;
 }
 
 .card:hover{
     transform:translateY(-4px);
-    box-shadow:0 0 25px rgba(0,255,200,0.2);
+
+    box-shadow:
+    0 0 30px rgba(0,255,200,0.2);
 }
 
 .label{
@@ -160,13 +220,15 @@ button:hover{
 /* ========================= */
 
 .right{
-    width:620px;
+    width:700px;
+
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:flex-start;
-    margin-left:40px;
-    margin-top:-20px;
+
+    margin-left:20px;
+    margin-top:-60px;
 }
 
 /* ========================= */
@@ -175,80 +237,84 @@ button:hover{
 
 .calc-box{
 
-    width:500px;
+    width:620px;
 
     background:rgba(255,255,255,0.03);
 
     border:1px solid rgba(0,255,200,0.15);
 
-    border-radius:20px;
+    border-radius:24px;
 
-    padding:25px;
+    padding:30px;
+
+    margin-bottom:30px;
 
     backdrop-filter:blur(12px);
 
-    box-shadow:0 0 25px rgba(0,255,200,0.08);
-
-    margin-bottom:25px;
+    box-shadow:
+    0 0 30px rgba(0,255,200,0.05);
 }
 
 .calc-box h3{
 
+    font-size:42px;
+
     margin-top:0;
 
-    margin-bottom:20px;
-
-    font-size:34px;
+    margin-bottom:25px;
 
     color:white;
 }
 
-.calc-row{
+.calc-inputs{
 
     display:flex;
 
-    gap:10px;
+    gap:15px;
 
-    margin-bottom:15px;
+    flex-wrap:wrap;
 }
 
-.calc-box input{
+.calc-inputs input{
 
     flex:1;
 
-    padding:14px;
-
-    border:none;
-
-    border-radius:12px;
+    min-width:150px;
 
     background:#101827;
 
+    border:1px solid rgba(255,255,255,0.08);
+
     color:white;
 
-    outline:none;
+    padding:16px;
+
+    border-radius:14px;
 
     font-size:15px;
 
-    border:1px solid rgba(255,255,255,0.05);
+    outline:none;
+
+    box-shadow:
+    0 0 15px rgba(0,255,200,0.05);
 }
 
-.calc-box input:focus{
+.calc-box button{
 
-    border:1px solid rgba(0,255,200,0.4);
+    margin-top:20px;
 
-    box-shadow:0 0 15px rgba(0,255,200,0.15);
+    width:100%;
 }
 
 #result{
 
     margin-top:20px;
 
-    color:#00ffcc;
-
-    font-size:22px;
+    font-size:28px;
 
     font-weight:bold;
+
+    color:#00ffcc;
 }
 
 /* ========================= */
@@ -257,12 +323,16 @@ button:hover{
 
 .sphere-wrap{
     position:relative;
+
     width:520px;
     height:520px;
+
     display:flex;
+
     justify-content:center;
     align-items:center;
-    margin-bottom:20px;
+
+    margin-bottom:0;
 }
 
 /* ========================= */
@@ -271,8 +341,10 @@ button:hover{
 
 .globe-container{
     position:relative;
+
     width:500px;
     height:500px;
+
     z-index:2;
 }
 
@@ -282,8 +354,10 @@ button:hover{
 
 .globe-container canvas{
     position:absolute;
+
     top:0;
     left:0;
+
     width:500px;
     height:500px;
 }
@@ -294,6 +368,7 @@ button:hover{
 
 .glow{
     position:absolute;
+
     width:320px;
     height:320px;
 
@@ -309,8 +384,6 @@ button:hover{
     filter:blur(20px);
 
     z-index:1;
-
-    animation:glow 3s infinite alternate;
 }
 
 /* ========================= */
@@ -319,8 +392,11 @@ button:hover{
 
 .orbit{
     position:absolute;
+
     border:1px solid rgba(0,255,200,0.08);
+
     border-radius:50%;
+
     z-index:1;
 }
 
@@ -330,16 +406,24 @@ button:hover{
 
 .city{
     position:absolute;
+
     transform:translate(-50%,-50%);
+
     color:#00ffc3;
+
     font-size:11px;
+
     padding:4px 8px;
+
     border-radius:10px;
+
     background:rgba(0,255,200,0.06);
+
     border:1px solid rgba(0,255,200,0.25);
+
     white-space:nowrap;
+
     z-index:3;
-    backdrop-filter:blur(5px);
 }
 
 /* ========================= */
@@ -347,9 +431,9 @@ button:hover{
 /* ========================= */
 
 .chart{
-    width:500px;
-    margin-top:-40px;
-    margin-left:40px;
+    width:620px;
+
+    margin-top:-20px;
 }
 
 /* ========================= */
@@ -360,12 +444,10 @@ button:hover{
 
     from{
         opacity:0.3;
-        transform:scale(1);
     }
 
     to{
         opacity:1;
-        transform:scale(1.08);
     }
 }
 
@@ -377,248 +459,227 @@ button:hover{
 
 <div class="container">
 
-    <!-- ЛЕВАЯ ЧАСТЬ -->
+<!-- ЛЕВАЯ ЧАСТЬ -->
 
-    <div class="left">
+<div class="left">
 
-        <div class="small">
-            Asesoria y Gestoria Diversificada
-        </div>
+<div class="small">
+Asesoria y Gestoria Diversificada
+</div>
 
-        <div class="green">
-            Estrategias automatizadas
-        </div>
+<div class="green">
+Estrategias automatizadas
+</div>
 
-        <h1>Capital Inteligente</h1>
+<h1>
+Capital<br>
+Inteligente
+</h1>
 
-        <div class="desc">
-            Optimiza tus inversiones con datos reales del mercado en tiempo real.
-        </div>
+<div class="desc">
+Optimiza tus inversiones con datos reales del mercado en tiempo real.
+</div>
 
-        <button onclick="alert('Acceso próximamente')">
-            Comenzar ahora
-        </button>
+<button>
+Comenzar ahora
+</button>
 
-        <!-- ЦЕНЫ -->
+<!-- ЦЕНЫ -->
 
-        <div class="prices">
+<div class="prices">
 
-            <span id="btc"></span>
+<span id="btc"></span>
 
-            <span id="eth"></span>
+<span id="eth"></span>
 
-            <span id="usd"></span>
+<span id="mxn"></span>
 
-            <span id="mxn"></span>
+</div>
 
-        </div>
+<!-- КАРТОЧКИ -->
 
-        <!-- КАРТОЧКИ -->
+<div class="stats-advanced">
 
-        <div class="stats-advanced">
+<div class="card">
 
-            <div class="card">
+<div class="label">
+📈 Profit
+</div>
 
-                <div class="label">
-                 📈 Profit
-                </div>
+<div class="value green" id="profit">
+0
+</div>
 
-                <div class="value green" id="profit">
-                    0
-                </div>
+<div class="desc">
+Ganancia total
+</div>
 
-                <div class="desc">
-                    Ganancia total
-                </div>
+</div>
 
-            </div>
+<div class="card">
 
-            <div class="card">
+<div class="label">
+🎯 Win Rate
+</div>
 
-                <div class="label">
-                    🎯 Win Rate
-                </div>
+<div class="value green" id="win">
+83%
+</div>
 
-                <div class="value green" id="win">
-                    83.98%
-                </div>
+<div class="desc">
+Operaciones exitosas
+</div>
 
-                <div class="desc">
-                    Operaciones exitosas
-                </div>
+</div>
 
-            </div>
+<div class="card">
 
-            <div class="card">
+<div class="label">
+⚖️ Risk / Reward
+</div>
 
-                <div class="label">
-                    ⚖️ Risk / Reward
-                </div>
+<div class="value">
+1:3.7
+</div>
 
-                <div class="value">
-                    1:3.7
-                </div>
+<div class="desc">
+Relación promedio
+</div>
 
-                <div class="desc">
-                    Relación promedio
-                </div>
+</div>
 
-            </div>
+</div>
 
-        </div>
+</div>
 
-    </div>
+<!-- ПРАВАЯ ЧАСТЬ -->
 
-    <!-- ПРАВАЯ ЧАСТЬ -->
+<div class="right">
 
-    <div class="right">
+<!-- КАЛЬКУЛЯТОР -->
 
-        <!-- КАЛЬКУЛЯТОР -->
+<div class="calc-box">
 
-        <div class="calc-box">
+<h3>
+Proyección inteligente
+</h3>
 
-            <h3>
-                Proyección inteligente
-            </h3>
+<div class="calc-inputs">
 
-            <div class="calc-row">
+<input
+type="number"
+id="amount"
+placeholder="Monto inicial">
 
-                <input
-                    type="number"
-                    id="amount"
-                    placeholder="Monto inicial"
-                >
+<input
+type="number"
+id="percent"
+placeholder="% mensual">
 
-                <input
-                    type="number"
-                    id="percent"
-                    placeholder="% mensual"
-                >
+<input
+type="number"
+id="months"
+placeholder="Meses">
 
-                <input
-                    type="number"
-                    id="months"
-                    placeholder="Meses"
-                >
+</div>
 
-            </div>
+<button onclick="calculateProfit()">
+Calcular rendimiento
+</button>
 
-            <button onclick="calculateProfit()">
-                Calcular rendimiento
-            </button>
+<div id="result"></div>
 
-            <div id="result"></div>
+</div>
 
-        </div>
+<!-- ШАР -->
 
-        <!-- ШАР -->
+<div class="sphere-wrap">
 
-        <div class="sphere-wrap">
+<div class="glow"></div>
 
-            <!-- СВЕЧЕНИЕ -->
+<div class="orbit"
+style="width:300px;height:300px;top:100px;left:100px;">
+</div>
 
-            <div class="glow"></div>
+<div class="orbit"
+style="width:360px;height:360px;top:70px;left:70px;">
+</div>
 
-            <!-- ОРБИТЫ -->
+<div class="orbit"
+style="width:420px;height:420px;top:40px;left:40px;">
+</div>
 
-            <div class="orbit"
-                 style="width:300px;height:300px;top:100px;left:100px;">
-            </div>
+<div class="globe-container">
 
-            <div class="orbit"
-                 style="width:360px;height:360px;top:70px;left:70px;">
-            </div>
+<canvas
+id="sphere"
+width="500"
+height="500">
+</canvas>
 
-            <div class="orbit"
-                 style="width:420px;height:420px;top:40px;left:40px;">
-            </div>
+<div class="city" style="top:18%; left:35%">
+USA +0.32%
+</div>
 
-            <!-- ГЛОБУС -->
+<div class="city" style="top:28%; left:30%">
+Canada +0.29%
+</div>
 
-            <div class="globe-container">
+<div class="city" style="top:40%; left:25%">
+Mexico +0.18%
+</div>
 
-                <canvas id="sphere"
-                        width="500"
-                        height="500">
-                </canvas>
+<div class="city" style="top:30%; left:50%">
+UK +0.45%
+</div>
 
-                <!-- ГОРОДА -->
+<div class="city" style="top:38%; left:55%">
+France +0.33%
+</div>
 
-                <div class="city"
-                     style="top:18%; left:35%">
-                    USA +0.32%
-                </div>
+<div class="city" style="top:45%; left:60%">
+Germany +0.38%
+</div>
 
-                <div class="city"
-                     style="top:28%; left:30%">
-                    Canada +0.29%
-                </div>
+<div class="city" style="top:50%; left:65%">
+Dubai +0.52%
+</div>
 
-                <div class="city"
-                     style="top:40%; left:25%">
-                    Mexico +0.18%
-                </div>
+<div class="city" style="top:42%; left:78%">
+Japan +0.67%
+</div>
 
-                <div class="city"
-                     style="top:30%; left:50%">
-                    UK +0.45%
-                </div>
+<div class="city" style="top:52%; left:85%">
+Hong Kong +0.41%
+</div>
 
-                <div class="city"
-                     style="top:38%; left:55%">
-                    France +0.33%
-                </div>
+<div class="city" style="top:62%; left:80%">
+Singapore +0.38%
+</div>
 
-                <div class="city"
-                     style="top:45%; left:60%">
-                    Germany +0.38%
-                </div>
+<div class="city" style="top:72%; left:70%">
+Australia +0.26%
+</div>
 
-                <div class="city"
-                     style="top:50%; left:65%">
-                    Dubai +0.52%
-                </div>
+<div class="city" style="top:65%; left:45%">
+Brazil +0.21%
+</div>
 
-                <div class="city"
-                     style="top:42%; left:78%">
-                    Japan +0.67%
-                </div>
+</div>
 
-                <div class="city"
-                     style="top:52%; left:85%">
-                    Hong Kong +0.41%
-                </div>
+</div>
 
-                <div class="city"
-                     style="top:62%; left:80%">
-                    Singapore +0.38%
-                </div>
+<!-- ГРАФИК -->
 
-                <div class="city"
-                     style="top:72%; left:70%">
-                    Australia +0.26%
-                </div>
+<div class="chart">
 
-                <div class="city"
-                     style="top:65%; left:45%">
-                    Brazil +0.21%
-                </div>
+<script src="https://s3.tradingview.com/tv.js"></script>
 
-            </div>
+<div id="chart"></div>
 
-        </div>
+</div>
 
-        <!-- ГРАФИК -->
-
-        <div class="chart">
-
-            <script src="https://s3.tradingview.com/tv.js"></script>
-
-            <div id="chart"></div>
-
-        </div>
-
-    </div>
+</div>
 
 </div>
 
@@ -630,8 +691,6 @@ const canvas = document.getElementById("sphere");
 
 const ctx = canvas.getContext("2d");
 
-/* МЫШКА */
-
 let mouseX = 0;
 let mouseY = 0;
 
@@ -640,94 +699,77 @@ let angleY = 0;
 
 let auto = 0;
 
-/* ДВИЖЕНИЕ МЫШКИ */
-
 canvas.addEventListener("mousemove", e => {
 
-    let rect = canvas.getBoundingClientRect();
+let rect = canvas.getBoundingClientRect();
 
-    mouseX = (e.clientX - rect.left - 250) / 250;
+mouseX = (e.clientX - rect.left - 250) / 250;
 
-    mouseY = (e.clientY - rect.top - 250) / 250;
+mouseY = (e.clientY - rect.top - 250) / 250;
 
 });
-
-/* ТОЧКИ */
 
 const pts = [];
 
 for(let i = 0; i < 1200; i++){
 
-    let t = Math.random() * Math.PI * 2;
+let t = Math.random() * Math.PI * 2;
 
-    let p = Math.acos(Math.random() * 2 - 1);
+let p = Math.acos(Math.random() * 2 - 1);
 
-    let r = 180;
+let r = 180;
 
-    pts.push({
+pts.push({
 
-        x:r*Math.sin(p)*Math.cos(t),
+x:r*Math.sin(p)*Math.cos(t),
 
-        y:r*Math.sin(p)*Math.sin(t),
+y:r*Math.sin(p)*Math.sin(t),
 
-        z:r*Math.cos(p)
+z:r*Math.cos(p)
 
-    });
+});
 
 }
 
-/* РИСОВАНИЕ */
-
 function draw(){
 
-    ctx.clearRect(0,0,500,500);
+ctx.clearRect(0,0,500,500);
 
-    auto += 0.002;
+auto += 0.002;
 
-    angleX += (mouseY - angleX) * 0.05;
+angleX += (mouseY - angleX) * 0.05;
 
-    angleY += (mouseX + auto - angleY) * 0.05;
+angleY += (mouseX + auto - angleY) * 0.05;
 
-    pts.forEach(p => {
+pts.forEach(p => {
 
-        let x = p.x;
+let x = p.x;
 
-        let y = p.y*Math.cos(angleX)-p.z*Math.sin(angleX);
+let y = p.y*Math.cos(angleX)-p.z*Math.sin(angleX);
 
-        let z = p.y*Math.sin(angleX)+p.z*Math.cos(angleX);
+let z = p.y*Math.sin(angleX)+p.z*Math.cos(angleX);
 
-        let x2 = x*Math.cos(angleY)-z*Math.sin(angleY);
+let x2 = x*Math.cos(angleY)-z*Math.sin(angleY);
 
-        let z2 = x*Math.sin(angleY)+z*Math.cos(angleY);
+let z2 = x*Math.sin(angleY)+z*Math.cos(angleY);
 
-        let scale = 400/(400+z2);
+let scale = 400/(400+z2);
 
-        let px = 250 + x2*scale;
+let px = 250 + x2*scale;
 
-        let py = 250 + y*scale;
+let py = 250 + y*scale;
 
-        ctx.beginPath();
+ctx.beginPath();
 
-        ctx.arc(px,py,1.5*scale,0,Math.PI*2);
+ctx.arc(px,py,1.5*scale,0,Math.PI*2);
 
-        ctx.fillStyle = "#00ffcc";
+ctx.fillStyle = "#00ffcc";
 
-        ctx.fill();
+ctx.fill();
 
-        if(Math.random() > 0.97){
+});
 
-            ctx.beginPath();
-
-            ctx.arc(px,py,3,0,Math.PI*2);
-
-            ctx.fillStyle = "rgba(0,255,200,0.5)";
-
-            ctx.fill();
-        }
-
-    });
-
-    requestAnimationFrame(draw);
+requestAnimationFrame(draw);
 
 }
 
@@ -737,31 +779,28 @@ draw();
 
 async function loadPrices(){
 
-    try{
+try{
 
-        const res = await fetch(
-            "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,mxn"
-        );
+const res = await fetch(
+"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,mxn"
+);
 
-        const data = await res.json();
+const data = await res.json();
 
-        document.getElementById("btc").innerHTML =
-            "BTC: $" + data.bitcoin.usd.toLocaleString();
+document.getElementById("btc").innerHTML =
+"BTC: $" + data.bitcoin.usd.toLocaleString();
 
-        document.getElementById("eth").innerHTML =
-            "ETH: $" + data.ethereum.usd.toLocaleString();
+document.getElementById("eth").innerHTML =
+"ETH: $" + data.ethereum.usd.toLocaleString();
 
-        document.getElementById("usd").innerHTML =
-            "USD: 1.00";
+document.getElementById("mxn").innerHTML =
+"MXN: " + data.bitcoin.mxn.toLocaleString();
 
-        document.getElementById("mxn").innerHTML =
-            "MXN: " + data.bitcoin.mxn.toLocaleString();
+}catch(e){
 
-    }catch(e){
+console.log(e);
 
-        console.log(e);
-
-    }
+}
 
 }
 
@@ -769,52 +808,52 @@ loadPrices();
 
 setInterval(loadPrices,10000);
 
-/* АНИМАЦИЯ ЦИФР */
+/* АНИМАЦИЯ */
 
 function animateValue(id,start,end,duration){
 
-    let obj = document.getElementById(id);
+let obj = document.getElementById(id);
 
-    let startTime = null;
+let startTime = null;
 
-    function step(timestamp){
+function step(timestamp){
 
-        if(!startTime){
+if(!startTime){
 
-            startTime = timestamp;
+startTime = timestamp;
 
-        }
+}
 
-        let progress = Math.min(
-            (timestamp - startTime) / duration,
-            1
-        );
+let progress = Math.min(
+(timestamp - startTime) / duration,
+1
+);
 
-        if(id === "profit"){
+if(id === "profit"){
 
-            obj.innerHTML =
-                "+" + Math.floor(
-                    progress * (end - start) + start
-                );
+obj.innerHTML =
+"+" + Math.floor(
+progress * (end - start) + start
+);
 
-        }else{
+}else{
 
-            obj.innerHTML =
-                Math.floor(
-                    progress * (end - start) + start
-                ) + "%";
+obj.innerHTML =
+Math.floor(
+progress * (end - start) + start
+) + "%";
 
-        }
+}
 
-        if(progress < 1){
+if(progress < 1){
 
-            requestAnimationFrame(step);
+requestAnimationFrame(step);
 
-        }
+}
 
-    }
+}
 
-    requestAnimationFrame(step);
+requestAnimationFrame(step);
 
 }
 
@@ -826,33 +865,34 @@ animateValue("win",0,83,2000);
 
 function calculateProfit() {
 
-    let amount =
-    parseFloat(document.getElementById("amount").value);
+let amount =
+parseFloat(document.getElementById("amount").value);
 
-    let percent =
-    parseFloat(document.getElementById("percent").value);
+let percent =
+parseFloat(document.getElementById("percent").value);
 
-    let months =
-    parseInt(document.getElementById("months").value);
+let months =
+parseInt(document.getElementById("months").value);
 
-    if(!amount || !percent || !months){
+if(!amount || !percent || !months){
 
-        document.getElementById("result").innerHTML =
-        "Completa todos los campos";
+document.getElementById("result").innerHTML =
+"Completa todos los campos";
 
-        return;
-    }
+return;
 
-    let total = amount;
+}
 
-    for(let i = 0; i < months; i++){
+let total = amount;
 
-        total += total * (percent / 100);
+for(let i = 0; i < months; i++){
 
-    }
+total += total * (percent / 100);
 
-    document.getElementById("result").innerHTML =
-    "Resultado: $" + total.toFixed(2);
+}
+
+document.getElementById("result").innerHTML =
+"Resultado: $" + total.toFixed(2);
 
 }
 
@@ -860,17 +900,17 @@ function calculateProfit() {
 
 new TradingView.widget({
 
-    width:500,
+width:620,
 
-    height:300,
+height:360,
 
-    symbol:"BINANCE:BTCUSDT",
+symbol:"BINANCE:BTCUSDT",
 
-    interval:"15",
+interval:"15",
 
-    theme:"dark",
+theme:"dark",
 
-    container_id:"chart"
+container_id:"chart"
 
 });
 
