@@ -714,6 +714,37 @@ new TradingView.widget({
 });
 
 </script>
+<script>
+
+function calculateProfit() {
+
+let amount =
+parseFloat(document.getElementById("amount").value);
+
+let percent =
+parseFloat(document.getElementById("percent").value);
+
+let months =
+parseInt(document.getElementById("months").value);
+
+if(!amount || !percent || !months){
+    document.getElementById("result").innerHTML =
+    "Completa todos los campos";
+    return;
+}
+
+let total = amount;
+
+for(let i = 0; i < months; i++){
+    total += total * (percent / 100);
+}
+
+document.getElementById("result").innerHTML =
+"Resultado: $" + total.toFixed(2);
+
+}
+
+</script>
 
 </body>
 
