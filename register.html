@@ -161,9 +161,14 @@ button{
     <div class="calculator">
         <h2>Calcula tu capital inteligente</h2>
 
-        <input id="amount" type="number" placeholder="Capital inicial">
-        <input id="percent" type="number" placeholder="Rentabilidad %">
-        <input id="days" type="number" placeholder="Días">
+       <input id="amount" type="number" placeholder="Capital inicial">
+
+<!-- FIXED RATE -->
+<div class="fixed-rate">
+  Rentabilidad fija: <b>6% mensual</b>
+</div>
+
+<input id="days" type="number" placeholder="Días de inversión">
 
         <button onclick="calc()">Calcular</button>
 
@@ -204,19 +209,22 @@ button{
 function calc(){
 
     let amount = parseFloat(document.getElementById("amount").value);
-    let percent = parseFloat(document.getElementById("percent").value);
     let days = parseFloat(document.getElementById("days").value);
 
-    if(isNaN(amount) || isNaN(percent) || isNaN(days)){
-        document.getElementById("result").innerHTML =
-        "Introduce todos los valores";
-        return;
+    let percent = 6; // FIXED
+
+    if (isNaN(amount) || isNaN(days)) {
+    document.getElementById("result").innerHTML =
+    "Introduce todos los valores";
+    return;
+}
     }
 
     let result = amount * Math.pow((1 + percent/100), days);
 
     document.getElementById("result").innerHTML =
     "Resultado: $" + result.toFixed(2);
+}
 }
 </script>
 
