@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capital AI PRO v2</title>
+
+<title>Capital AI - Pro Level 2</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
@@ -18,27 +19,26 @@ color:#e6edf7;
 overflow:hidden;
 }
 
-/* ===== GRID LAYOUT ===== */
+/* GRID */
 .dashboard{
 display:grid;
-grid-template-columns: 260px 1fr 380px;
+grid-template-columns:260px 1fr 420px;
 height:100vh;
 gap:12px;
 padding:12px;
+box-sizing:border-box;
 }
 
-/* ===== SIDEBAR ===== */
+/* SIDEBAR */
 .sidebar{
 background:#0c1324;
 border-radius:14px;
 padding:15px;
-display:flex;
-flex-direction:column;
-gap:12px;
 }
 
 .nav{
 padding:10px;
+margin-bottom:8px;
 border-radius:10px;
 background:#0f1a33;
 cursor:pointer;
@@ -49,7 +49,7 @@ font-size:14px;
 background:#152545;
 }
 
-/* ===== CENTER ===== */
+/* CENTER */
 .center{
 display:flex;
 flex-direction:column;
@@ -59,7 +59,7 @@ gap:12px;
 /* TOP CARDS */
 .top{
 display:grid;
-grid-template-columns: repeat(3,1fr);
+grid-template-columns:repeat(3,1fr);
 gap:10px;
 }
 
@@ -71,20 +71,20 @@ border-radius:12px;
 
 /* CHART */
 .chartBox{
-flex:1;
 background:#0c1324;
-border-radius:12px;
 padding:12px;
+border-radius:12px;
+height:320px;
 }
 
-/* ===== RIGHT PANEL ===== */
+/* RIGHT */
 .right{
 display:flex;
 flex-direction:column;
 gap:12px;
 }
 
-/* WIDGETS */
+/* WIDGET */
 .widget{
 background:#0c1324;
 border-radius:12px;
@@ -93,15 +93,20 @@ padding:12px;
 
 /* GLOBE */
 #globe{
-height:240px;
+height:300px;
 }
 
 /* NEWS */
 .news{
 font-size:13px;
-opacity:0.9;
 line-height:1.4;
+max-height:160px;
+overflow:auto;
 }
+
+/* COLORS */
+.green{color:#00ffcc}
+.small{font-size:12px;opacity:0.7}
 
 button{
 background:#00ffcc;
@@ -109,15 +114,24 @@ border:none;
 padding:8px;
 border-radius:8px;
 cursor:pointer;
+width:100%;
 margin-top:6px;
 }
 
-.small{
-font-size:12px;
-opacity:0.7;
+/* XP BAR */
+.xpBar{
+height:6px;
+background:#1a2742;
+border-radius:10px;
+overflow:hidden;
+margin-top:6px;
 }
 
-.green{color:#00ffcc}
+.xpFill{
+height:100%;
+width:40%;
+background:#00ffcc;
+}
 
 </style>
 </head>
@@ -129,32 +143,32 @@ opacity:0.7;
 <!-- SIDEBAR -->
 <div class="sidebar">
 
-<h3>CAPITAL AI</h3>
+<h3>PANEL PRO</h3>
 
-<div class="nav">📊 Dashboard</div>
-<div class="nav">💼 Wallet</div>
-<div class="nav">🤖 AI Signals</div>
-<div class="nav">🌍 Markets</div>
-<div class="nav">⚙ Settings</div>
+<div class="nav">Dashboard</div>
+<div class="nav">Portafolio</div>
+<div class="nav">Mercados</div>
+<div class="nav">Nivel</div>
 
 </div>
 
 <!-- CENTER -->
 <div class="center">
 
-<!-- TOP STATS -->
+<!-- TOP -->
 <div class="top">
 
 <div class="card">
-Balance<br><b>$10,000</b>
+Saldo<br><b>$10,000</b>
 </div>
 
 <div class="card">
-ROI<br><span class="green">+6% monthly</span>
+Nivel<br><b class="green">Trader 3</b>
+<div class="xpBar"><div class="xpFill"></div></div>
 </div>
 
 <div class="card">
-Risk<br><b>Low</b>
+ROI<br><b class="green">+6%</b>
 </div>
 
 </div>
@@ -169,36 +183,36 @@ Risk<br><b>Low</b>
 <!-- RIGHT -->
 <div class="right">
 
-<!-- GLOBE -->
+<!-- GLOBE GAME -->
 <div class="widget">
-<h4>🌍 Global Flow</h4>
+<h4>🌍 Reward System</h4>
+<div class="small">Click the globe to earn XP</div>
+
 <div id="globe"></div>
+
+<b class="green" id="reward">$0</b>
+<div class="small">XP increases speed & rewards</div>
 </div>
 
 <!-- WALLET -->
 <div class="widget">
-<h4>💼 Wallet</h4>
-<div class="small">Disponible</div>
+<h4>Wallet</h4>
 <b class="green">$1,234.56</b>
-</div>
-
-<!-- AI -->
-<div class="widget">
-<h4>🤖 AI Activity</h4>
-<div class="small">BTC signal detected</div>
-<div class="small">Portfolio balanced</div>
-<div class="small">Market bullish trend</div>
 </div>
 
 <!-- NEWS -->
 <div class="widget">
-<h4>📰 News</h4>
-<div class="news">BTC consolidates before breakout</div>
-<div class="news">AI trading models improve accuracy</div>
-<div class="news">Market volatility decreases</div>
+<h4>Market News</h4>
 
-<button>Contact trader</button>
-<button>Schedule meeting</button>
+<div class="news">
+<p>Bitcoin stabilizes after volatility</p>
+<p>Global markets remain neutral</p>
+<p>Crypto volume increases</p>
+<p>Tech stocks lead growth</p>
+</div>
+
+<button>Contact Trader</button>
+<button>Book Meeting</button>
 
 </div>
 
@@ -208,9 +222,9 @@ Risk<br><b>Low</b>
 
 <script>
 
-/* ===== USER MOCK ===== */
-let user = localStorage.getItem("user") || "Trader";
-document.title = "Capital AI - " + user;
+/* ===== LEVEL SYSTEM ===== */
+let reward = 0;
+let xp = 40;
 
 /* ===== CHART ===== */
 new Chart(document.getElementById("chart"),{
@@ -218,7 +232,7 @@ type:"line",
 data:{
 labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
 datasets:[{
-data:[10000,10200,10100,10700,11000,11500,12000],
+data:[10000,10200,10100,10800,11200,11800,12500],
 borderColor:"#00ffcc",
 tension:0.35
 }]
@@ -229,31 +243,50 @@ scales:{x:{display:false},y:{display:false}}
 }
 });
 
-/* ===== GLOBE (SMALL + CLEAN) ===== */
+/* ===== GLOBE ===== */
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 
 let renderer = new THREE.WebGLRenderer({alpha:true});
-renderer.setSize(380,240);
+renderer.setSize(420,300);
 
 document.getElementById("globe").appendChild(renderer.domElement);
 
 let globe = new THREE.Points(
-new THREE.SphereGeometry(1.2,28,28),
-new THREE.PointsMaterial({color:0x00ffcc,size:0.03})
+new THREE.SphereGeometry(1.5,32,32),
+new THREE.PointsMaterial({color:0x00ffcc,size:0.025})
 );
 
 scene.add(globe);
-camera.position.z = 2.8;
+camera.position.z = 3;
 
+/* CLICK SYSTEM */
+renderer.domElement.addEventListener("click",()=>{
+
+reward += 10;
+xp += 2;
+
+if(xp > 100) xp = 100;
+
+document.querySelector(".xpFill").style.width = xp + "%";
+
+});
+
+/* ANIMATE */
 function animate(){
+
 requestAnimationFrame(animate);
-globe.rotation.y += 0.002;
+
+globe.rotation.y += 0.002 + reward * 0.00001;
+
+document.getElementById("reward").innerText =
+"$" + reward * 12;
+
 renderer.render(scene,camera);
 }
 
 animate();
-
+  
 </script>
 
 </body>
