@@ -3,57 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capital AI Pro | Dashboard</title>
+<title>Capital AI Pro Dashboard</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-
-<script>
-let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75,300/300,0.1,1000);
-let renderer = new THREE.WebGLRenderer({alpha:true});
-
-renderer.setSize(300,300);
-document.querySelector(".globeBox").appendChild(renderer.domElement);
-
-/* SPHERE */
-let geometry = new THREE.SphereGeometry(1.5,32,32);
-
-let material = new THREE.PointsMaterial({
-color:0x00ffcc,
-size:0.02
-});
-
-let sphere = new THREE.Points(geometry, material);
-scene.add(sphere);
-
-camera.position.z = 3;
-
-/* MOUSE CONTROL */
-let mouseX = 0;
-document.addEventListener("mousemove",(e)=>{
-mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-});
-
-/* ANIMATION */
-function animate(){
-requestAnimationFrame(animate);
-
-sphere.rotation.y += 0.002;
-sphere.rotation.x = mouseX * 0.3;
-
-renderer.render(scene,camera);
-}
-
-animate();
-</script>
 
 <style>
 
-/* ================= BASE ================= */
 body{
 margin:0;
 font-family:Arial;
-background:#070b14;
+background:#060b14;
 color:white;
 overflow:hidden;
 }
@@ -63,7 +23,7 @@ display:flex;
 height:100vh;
 }
 
-/* ================= SIDEBAR ================= */
+/* SIDEBAR */
 .sidebar{
 width:220px;
 background:#0b1220;
@@ -71,14 +31,13 @@ padding:20px;
 }
 
 .logo{
-font-size:18px;
-font-weight:bold;
 color:#00ffcc;
+font-weight:bold;
 margin-bottom:30px;
 }
 
 .menu div{
-padding:12px;
+padding:10px;
 margin:8px 0;
 border-radius:10px;
 cursor:pointer;
@@ -88,15 +47,15 @@ cursor:pointer;
 background:#111a2e;
 }
 
-/* ================= MAIN ================= */
+/* MAIN */
 .main{
 flex:1;
 padding:20px;
 overflow:auto;
 }
 
-/* TOP CARDS */
-.cards{
+/* TOP */
+.top{
 display:flex;
 gap:15px;
 }
@@ -110,7 +69,7 @@ border-radius:15px;
 
 .green{color:#00ffcc}
 
-/* ================= CHART ================= */
+/* CHART */
 .chartBox{
 margin-top:20px;
 background:#0e1628;
@@ -118,29 +77,29 @@ padding:15px;
 border-radius:15px;
 }
 
-/* ================= WALLET ================= */
+/* WALLET */
 .wallet{
+margin-top:20px;
 background:#0e1628;
 padding:15px;
 border-radius:15px;
-margin-top:20px;
 }
 
-/* ================= ACTIVITY ================= */
-.activity{
+/* AI */
+.ai{
+margin-top:20px;
 background:#0e1628;
 padding:15px;
 border-radius:15px;
-margin-top:20px;
 }
 
-/* ================= GLOBE ================= */
+/* GLOBE */
 .globeBox{
 position:absolute;
 right:20px;
 top:80px;
-width:300px;
-height:300px;
+width:320px;
+height:320px;
 }
 
 canvas{
@@ -148,13 +107,12 @@ width:100%;
 height:100%;
 }
 
-/* FLOAT DOT */
 .glow{
 position:absolute;
+right:-120px;
+bottom:-120px;
 width:400px;
 height:400px;
-right:-100px;
-bottom:-100px;
 background:radial-gradient(circle,#00ffcc33,transparent 60%);
 filter:blur(20px);
 }
@@ -171,11 +129,11 @@ filter:blur(20px);
 <div class="logo">CAPITAL AI PRO</div>
 
 <div class="menu">
-<div>📊 Panel</div>
+<div>📊 Dashboard</div>
 <div>💼 Wallet</div>
-<div>📈 Señales AI</div>
+<div>📈 AI Signals</div>
 <div>🌍 Markets</div>
-<div>⚙ Ajustes</div>
+<div>⚙ Settings</div>
 </div>
 </div>
 
@@ -184,8 +142,8 @@ filter:blur(20px);
 
 <h2>Hola 👋 Trader</h2>
 
-<!-- CARDS -->
-<div class="cards">
+<!-- TOP CARDS -->
+<div class="top">
 
 <div class="card">
 Saldo<br>
@@ -216,82 +174,78 @@ Disponible: <b class="green">$1,234.56</b><br>
 Bloqueado: $0
 </div>
 
-<!-- ACTIVITY -->
-<div class="activity">
+<!-- AI -->
+<div class="ai">
 <h3>AI Activity</h3>
 <div>🤖 BTC signal detected</div>
-<div>📊 Portfolio balanced</div>
-<div>📈 Market trend bullish</div>
+<div>📊 Portfolio optimized</div>
+<div>🌍 Market trend bullish</div>
 </div>
 
 </div>
 </div>
 
 <!-- GLOBE -->
-<div class="globeBox">
-<canvas id="globe"></canvas>
-</div>
-
+<div class="globeBox" id="globe"></div>
 <div class="glow"></div>
 
 <script>
 
 /* ================= CHART ================= */
-const ctx = document.getElementById('chart');
-
-new Chart(ctx, {
+new Chart(document.getElementById('chart'),{
 type:'line',
 data:{
 labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
 datasets:[{
-label:'Portfolio',
-data:[10000,10500,10200,11000,11500,12000,12500],
+data:[10000,10300,10100,10800,11200,11800,12500],
 borderColor:'#00ffcc',
 tension:0.4
 }]
 },
 options:{
 plugins:{legend:{display:false}},
-scales:{
-x:{display:false},
-y:{display:false}
-}
+scales:{x:{display:false},y:{display:false}}
 }
 });
 
-/* ================= GLOBE (SIMPLE 3D DOT SPHERE) ================= */
-const canvas = document.getElementById("globe");
-const ctx2 = canvas.getContext("2d");
+/* ================= 3D GLOBE ================= */
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 
-canvas.width = 300;
-canvas.height = 300;
+let renderer = new THREE.WebGLRenderer({alpha:true});
+renderer.setSize(320,320);
+document.getElementById("globe").appendChild(renderer.domElement);
 
-let dots = [];
+/* SPHERE */
+let geometry = new THREE.SphereGeometry(1.5,32,32);
 
-for(let i=0;i<200;i++){
-dots.push({
-x:Math.random()*300,
-y:Math.random()*300,
-r:Math.random()*2
+let material = new THREE.PointsMaterial({
+color:0x00ffcc,
+size:0.02
 });
+
+let globe = new THREE.Points(geometry, material);
+scene.add(globe);
+
+camera.position.z = 3;
+
+/* mouse control */
+let mouseX = 0;
+document.addEventListener("mousemove",(e)=>{
+mouseX = (e.clientX / window.innerWidth)*2 - 1;
+});
+
+/* animate */
+function animate(){
+requestAnimationFrame(animate);
+
+globe.rotation.y += 0.002;
+globe.rotation.x = mouseX * 0.3;
+
+renderer.render(scene,camera);
 }
 
-function draw(){
-ctx2.clearRect(0,0,300,300);
-
-for(let d of dots){
-ctx2.beginPath();
-ctx2.arc(d.x,d.y,d.r,0,Math.PI*2);
-ctx2.fillStyle="#00ffcc";
-ctx2.fill();
-d.x += Math.sin(Date.now()*0.001 + d.y)*0.3;
-d.y += Math.cos(Date.now()*0.001 + d.x)*0.3;
-}
-
-requestAnimationFrame(draw);
-}
-
-draw();
+animate();
 
 </script>
 
