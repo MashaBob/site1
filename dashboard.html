@@ -3,155 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Capital AI Pro | Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
 
-/* =========================
-   BASE
-========================= */
-
+/* ================= BASE ================= */
 body{
-    margin:0;
-    font-family:Arial;
-    background:#070B14;
-    color:#E6EDF7;
-    overflow:hidden;
+margin:0;
+font-family:Arial;
+background:#070b14;
+color:white;
+overflow:hidden;
 }
-
-/* GRID */
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size:40px 40px;
-    z-index:-3;
-}
-
-/* GLOW */
-body::after{
-    content:"";
-    position:fixed;
-    width:700px;
-    height:700px;
-    background:radial-gradient(circle, rgba(0,229,168,0.15), transparent 60%);
-    top:-200px;
-    right:-200px;
-    filter:blur(60px);
-    z-index:-2;
-}
-
-/* =========================
-   LAYOUT
-========================= */
 
 .container{
-    display:flex;
-    height:100vh;
+display:flex;
+height:100vh;
 }
 
-/* SIDEBAR */
+/* ================= SIDEBAR ================= */
 .sidebar{
-    width:220px;
-    background:rgba(255,255,255,0.03);
-    padding:20px;
-    backdrop-filter:blur(20px);
+width:220px;
+background:#0b1220;
+padding:20px;
 }
 
 .logo{
-    color:#00E5A8;
-    font-weight:bold;
-    margin-bottom:25px;
+font-size:18px;
+font-weight:bold;
+color:#00ffcc;
+margin-bottom:30px;
 }
 
 .menu div{
-    padding:10px;
-    color:#8B93A7;
-    cursor:pointer;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+cursor:pointer;
 }
+
 .menu div:hover{
-    color:#00E5A8;
+background:#111a2e;
 }
 
-/* MAIN */
+/* ================= MAIN ================= */
 .main{
-    flex:1;
-    padding:20px;
-    position:relative;
-    z-index:2;
+flex:1;
+padding:20px;
+overflow:auto;
 }
 
-/* TOP */
-.top{
-    display:flex;
-    justify-content:space-between;
-}
-
-/* CARDS */
+/* TOP CARDS */
 .cards{
-    display:flex;
-    gap:15px;
-    margin-top:10px;
+display:flex;
+gap:15px;
 }
 
 .card{
-    flex:1;
-    background:rgba(255,255,255,0.04);
-    padding:15px;
-    border-radius:12px;
+flex:1;
+background:#0e1628;
+padding:15px;
+border-radius:15px;
 }
 
-/* CHART */
+.green{color:#00ffcc}
+
+/* ================= CHART ================= */
 .chartBox{
-    margin-top:15px;
-    background:rgba(255,255,255,0.04);
-    padding:15px;
-    border-radius:12px;
+margin-top:20px;
+background:#0e1628;
+padding:15px;
+border-radius:15px;
 }
 
-/* AI */
-.aiBox{
-    margin-top:15px;
-    background:rgba(255,255,255,0.04);
-    padding:15px;
-    border-radius:12px;
+/* ================= WALLET ================= */
+.wallet{
+background:#0e1628;
+padding:15px;
+border-radius:15px;
+margin-top:20px;
 }
 
-.signal{
-    padding:8px;
-    margin-top:5px;
-    border-left:3px solid #00E5A8;
-    background:rgba(0,229,168,0.08);
+/* ================= ACTIVITY ================= */
+.activity{
+background:#0e1628;
+padding:15px;
+border-radius:15px;
+margin-top:20px;
 }
 
-/* =========================
-   3D GLOBE
-========================= */
-
-#globe{
-    position:fixed;
-    right:-150px;
-    bottom:-150px;
-    width:500px;
-    height:500px;
-    z-index:0;
-    opacity:0.6;
+/* ================= GLOBE ================= */
+.globeBox{
+position:absolute;
+right:20px;
+top:80px;
+width:300px;
+height:300px;
 }
 
-/* BUTTON */
-button{
-    background:#00E5A8;
-    border:none;
-    padding:8px;
-    border-radius:10px;
-    cursor:pointer;
+canvas{
+width:100%;
+height:100%;
+}
+
+/* FLOAT DOT */
+.glow{
+position:absolute;
+width:400px;
+height:400px;
+right:-100px;
+bottom:-100px;
+background:radial-gradient(circle,#00ffcc33,transparent 60%);
+filter:blur(20px);
 }
 
 </style>
@@ -159,37 +124,44 @@ button{
 
 <body>
 
-<!-- 3D GLOBE -->
-<div id="globe"></div>
-
 <div class="container">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">CAPITAL AI</div>
+<div class="logo">CAPITAL AI PRO</div>
 
 <div class="menu">
-<div>Panel</div>
-<div>Wallet</div>
-<div>AI Signals</div>
-<div>Markets</div>
-<div onclick="logout()">Salir</div>
+<div>📊 Panel</div>
+<div>💼 Wallet</div>
+<div>📈 Señales AI</div>
+<div>🌍 Markets</div>
+<div>⚙ Ajustes</div>
 </div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
-<div class="top">
-<h2 id="user">Hola 👋</h2>
-<div>AI Status: 🟢 Active</div>
-</div>
+<h2>Hola 👋 Trader</h2>
 
 <!-- CARDS -->
 <div class="cards">
-<div class="card">Balance<br><b>$10,000</b></div>
-<div class="card">ROI<br><b>+8.4%</b></div>
-<div class="card">Risk<br><b>Low</b></div>
+
+<div class="card">
+Saldo<br>
+<h3>$10,000</h3>
+</div>
+
+<div class="card">
+ROI<br>
+<h3 class="green">+6% mensual</h3>
+</div>
+
+<div class="card">
+Riesgo<br>
+<h3>Low</h3>
+</div>
+
 </div>
 
 <!-- CHART -->
@@ -197,85 +169,89 @@ button{
 <canvas id="chart"></canvas>
 </div>
 
-<!-- AI SIGNALS -->
-<div class="aiBox">
-<h3>AI Signals</h3>
-<div class="signal">BUY BTC (momentum detected)</div>
-<div class="signal">HOLD ETH (stable zone)</div>
-<div class="signal">REBALANCE portfolio</div>
+<!-- WALLET -->
+<div class="wallet">
+<h3>Wallet</h3>
+Disponible: <b class="green">$1,234.56</b><br>
+Bloqueado: $0
+</div>
+
+<!-- ACTIVITY -->
+<div class="activity">
+<h3>AI Activity</h3>
+<div>🤖 BTC signal detected</div>
+<div>📊 Portfolio balanced</div>
+<div>📈 Market trend bullish</div>
 </div>
 
 </div>
-
 </div>
+
+<!-- GLOBE -->
+<div class="globeBox">
+<canvas id="globe"></canvas>
+</div>
+
+<div class="glow"></div>
 
 <script>
 
-/* =========================
-   USER
-========================= */
+/* ================= CHART ================= */
+const ctx = document.getElementById('chart');
 
-let user = localStorage.getItem("user");
-if(user){
-document.getElementById("user").innerText = "Hola " + user;
-}
-
-/* =========================
-   CHART
-========================= */
-
-new Chart(document.getElementById("chart"), {
-type:"line",
+new Chart(ctx, {
+type:'line',
 data:{
-labels:["Mon","Tue","Wed","Thu","Fri","Sat"],
+labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
 datasets:[{
-data:[10000,10250,10100,10500,10800,11200],
-borderColor:"#00E5A8",
-backgroundColor:"rgba(0,229,168,0.1)",
-fill:true
+label:'Portfolio',
+data:[10000,10500,10200,11000,11500,12000,12500],
+borderColor:'#00ffcc',
+tension:0.4
 }]
+},
+options:{
+plugins:{legend:{display:false}},
+scales:{
+x:{display:false},
+y:{display:false}
+}
 }
 });
 
-/* =========================
-   LOGOUT
-========================= */
+/* ================= GLOBE (SIMPLE 3D DOT SPHERE) ================= */
+const canvas = document.getElementById("globe");
+const ctx2 = canvas.getContext("2d");
 
-function logout(){
-localStorage.removeItem("user");
-window.location.href="index.html";
-}
+canvas.width = 300;
+canvas.height = 300;
 
-/* =========================
-   3D GLOBE (simple network sphere)
-========================= */
+let dots = [];
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
-const renderer = new THREE.WebGLRenderer({alpha:true});
-
-renderer.setSize(500,500);
-document.getElementById("globe").appendChild(renderer.domElement);
-
-const geometry = new THREE.SphereGeometry(2,32,32);
-const material = new THREE.PointsMaterial({
-color:0x00E5A8,
-size:0.05
+for(let i=0;i<200;i++){
+dots.push({
+x:Math.random()*300,
+y:Math.random()*300,
+r:Math.random()*2
 });
-
-const sphere = new THREE.Points(geometry, material);
-scene.add(sphere);
-
-camera.position.z = 5;
-
-function animate(){
-requestAnimationFrame(animate);
-sphere.rotation.y += 0.002;
-sphere.rotation.x += 0.001;
-renderer.render(scene,camera);
 }
 
-animate();
+function draw(){
+ctx2.clearRect(0,0,300,300);
+
+for(let d of dots){
+ctx2.beginPath();
+ctx2.arc(d.x,d.y,d.r,0,Math.PI*2);
+ctx2.fillStyle="#00ffcc";
+ctx2.fill();
+d.x += Math.sin(Date.now()*0.001 + d.y)*0.3;
+d.y += Math.cos(Date.now()*0.001 + d.x)*0.3;
+}
+
+requestAnimationFrame(draw);
+}
+
+draw();
 
 </script>
 
