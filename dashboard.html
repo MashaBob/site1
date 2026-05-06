@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Panel Pro Trader V10</title>
+<title>Panel Pro Trader</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
@@ -24,7 +24,6 @@ grid-template-columns:260px 1fr 380px;
 height:100vh;
 }
 
-/* LEFT */
 .left{
 background:#0b1220;
 padding:15px;
@@ -38,7 +37,6 @@ margin-bottom:8px;
 cursor:pointer;
 }
 
-/* CENTER */
 .center{
 padding:15px;
 display:flex;
@@ -46,7 +44,6 @@ flex-direction:column;
 gap:10px;
 }
 
-/* TOP KPIs */
 .kpis{
 display:flex;
 gap:10px;
@@ -57,23 +54,18 @@ flex:1;
 background:#0d1628;
 padding:10px;
 border-radius:12px;
-border:1px solid transparent;
-transition:.3s;
 }
 
 .kpi.active{
-border-color:#00ffcc;
-box-shadow:0 0 10px #00ffcc33;
+border:1px solid #00ffcc;
 }
 
-/* CHART */
 .card{
 background:#0d1628;
 padding:12px;
 border-radius:12px;
 }
 
-/* RIGHT */
 .right{
 padding:15px;
 display:flex;
@@ -87,7 +79,6 @@ padding:12px;
 border-radius:12px;
 }
 
-/* GAME */
 .gameBox{
 background:#08101f;
 border-radius:12px;
@@ -115,7 +106,6 @@ width:120px;
 height:120px;
 }
 
-/* NEWS LOCK */
 .news{
 background:#111b2e;
 padding:10px;
@@ -142,7 +132,6 @@ border-radius:8px;
 cursor:pointer;
 }
 
-/* WhatsApp */
 .whatsapp{
 background:#25D366;
 color:black;
@@ -151,11 +140,6 @@ border-radius:10px;
 text-align:center;
 cursor:pointer;
 font-weight:bold;
-}
-
-.small{
-font-size:12px;
-opacity:0.8;
 }
 
 </style>
@@ -177,10 +161,9 @@ opacity:0.8;
 <!-- CENTER -->
 <div class="center">
 
-<!-- KPIs -->
 <div class="kpis">
 
-<div class="kpi active">
+<div class="kpi">
 💰 Saldo<br>
 <b id="saldo">$10,000</b>
 </div>
@@ -197,9 +180,7 @@ opacity:0.8;
 
 </div>
 
-<!-- CHART -->
 <div class="card">
-<h4>📊 Estadísticas de inversión</h4>
 <canvas id="chart"></canvas>
 </div>
 
@@ -209,26 +190,25 @@ opacity:0.8;
 <div class="right">
 
 <div class="widget">
-<h4>🎮 Skill Game + Globo</h4>
+<h4>🎮 Game + Globo</h4>
 
 <div class="gameBox">
 <div class="ball" id="ball"></div>
 <div class="globe" id="globe"></div>
 </div>
 
-<div class="small">Arrastra y lanza el balón. Impacta el globo para generar rendimiento.</div>
-
 <p>Rendimiento: <b id="rend">0%</b></p>
 </div>
 
+<!-- 🔥 NEW LEVEL SYSTEM -->
 <div class="widget">
-<h4>📘 Cómo funciona</h4>
-<div class="small">
-1. Lanza el balón<br>
-2. Impacta el globo<br>
-3. Se genera rendimiento diario<br>
-4. Se actualiza el gráfico
-</div>
+<h4>⭐ Nivel del inversor</h4>
+Nivel: <b id="nivel">2 / 30</b>
+<br><br>
+
+<button onclick="subscribe()" style="background:#00ffcc;border:none;padding:6px;border-radius:8px;cursor:pointer;">
+Suscribirse Noticias (17 MXN)
+</button>
 </div>
 
 <div class="widget">
@@ -240,13 +220,12 @@ Trades: <b id="trades">0</b>
 <h4>📰 Noticias</h4>
 
 <div class="news">
-
 <div>Bitcoin estable</div>
 <div>Ethereum en alza</div>
 
 <div class="lock" id="lock">
-🔒 Premium 17 MXN/mes
-<button onclick="unlock()">Desbloquear</button>
+🔒 Premium Noticias
+<button onclick="subscribe()">Activar</button>
 </div>
 
 </div>
@@ -254,7 +233,7 @@ Trades: <b id="trades">0</b>
 </div>
 
 <div class="whatsapp" onclick="wa()">
-📞 Agendar llamada con tu asesor
+📞 Agendar llamada con asesor
 </div>
 
 </div>
@@ -263,10 +242,27 @@ Trades: <b id="trades">0</b>
 
 <script>
 
+/* ================= GAME STATE ================= */
+
 let balance = 10000;
 let daily = 0;
 let trades = 0;
 let history = [10000];
+
+/* ================= LEVEL SYSTEM ================= */
+
+let nivel = 2;
+let puntos = 2;
+let suscrito = false;
+
+/* + level helper */
+function addLevel(p){
+puntos += p;
+nivel = Math.min(30, puntos);
+document.getElementById("nivel").innerText = nivel + " / 30";
+}
+
+/* ================= CHART ================= */
 
 const ctx = document.getElementById("chart");
 
@@ -283,7 +279,8 @@ tension:0.3
 options:{plugins:{legend:{display:false}}}
 });
 
-/* BALL */
+/* ================= GAME (NO CHANGED) ================= */
+
 let ball = document.getElementById("ball");
 let y = 0;
 let speed = 0;
@@ -304,6 +301,7 @@ dragging = false;
 
 trades++;
 document.getElementById("trades").innerText = trades;
+
 scored = false;
 };
 
@@ -316,7 +314,6 @@ if(y < 0){ y = 0; speed = 0; }
 
 ball.style.bottom = (20 + y) + "px";
 
-/* HIT GLBOE */
 if(y > 170 && !scored){
 
 scored = true;
@@ -330,11 +327,13 @@ document.getElementById("rend").innerText = hit + "%";
 document.getElementById("daily").innerText = "$" + daily.toFixed(2);
 document.getElementById("saldo").innerText = "$" + balance.toFixed(2);
 
-/* update chart */
 history.push(balance);
 chart.data.labels.push("D"+history.length);
 chart.data.datasets[0].data = [...history];
 chart.update();
+
+/* 🔥 LEVEL BOOST FROM GAME */
+addLevel(1);
 
 y = 0;
 speed = 0;
@@ -345,7 +344,24 @@ requestAnimationFrame(loop);
 
 loop();
 
-/* GLOBE */
+/* ================= SUBSCRIPTION ================= */
+
+function subscribe(){
+if(!suscrito){
+suscrito = true;
+document.getElementById("lock").style.display="none";
+addLevel(5);
+}
+}
+
+/* ================= WHATSAPP ================= */
+
+function wa(){
+window.open("https://wa.me/5210000000000","_blank");
+}
+
+/* ================= GLOBE ================= */
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 const renderer = new THREE.WebGLRenderer({alpha:true});
@@ -367,16 +383,6 @@ globe.rotation.y += 0.01;
 renderer.render(scene,camera);
 }
 animate();
-
-/* NEWS */
-function unlock(){
-document.getElementById("lock").style.display="none";
-}
-
-/* WHATSAPP */
-function wa(){
-window.open("https://wa.me/5210000000000","_blank");
-}
 
 </script>
 
