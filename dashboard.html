@@ -3,10 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capital AI PRO - Level 2</title>
 
-<title>Capital AI - Pro Level 2</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
@@ -19,7 +17,7 @@ color:#e6edf7;
 overflow:hidden;
 }
 
-/* GRID */
+/* LAYOUT */
 .dashboard{
 display:grid;
 grid-template-columns:260px 1fr 420px;
@@ -56,25 +54,10 @@ flex-direction:column;
 gap:12px;
 }
 
-/* TOP CARDS */
-.top{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-}
-
 .card{
 background:#0c1324;
 padding:12px;
 border-radius:12px;
-}
-
-/* CHART */
-.chartBox{
-background:#0c1324;
-padding:12px;
-border-radius:12px;
-height:320px;
 }
 
 /* RIGHT */
@@ -96,14 +79,6 @@ padding:12px;
 height:300px;
 }
 
-/* NEWS */
-.news{
-font-size:13px;
-line-height:1.4;
-max-height:160px;
-overflow:auto;
-}
-
 /* COLORS */
 .green{color:#00ffcc}
 .small{font-size:12px;opacity:0.7}
@@ -118,21 +93,6 @@ width:100%;
 margin-top:6px;
 }
 
-/* XP BAR */
-.xpBar{
-height:6px;
-background:#1a2742;
-border-radius:10px;
-overflow:hidden;
-margin-top:6px;
-}
-
-.xpFill{
-height:100%;
-width:40%;
-background:#00ffcc;
-}
-
 </style>
 </head>
 
@@ -142,40 +102,21 @@ background:#00ffcc;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-
 <h3>PANEL PRO</h3>
 
 <div class="nav">Dashboard</div>
-<div class="nav">Portafolio</div>
-<div class="nav">Mercados</div>
-<div class="nav">Nivel</div>
-
+<div class="nav">Wallet</div>
+<div class="nav">Markets</div>
+<div class="nav">Settings</div>
 </div>
 
 <!-- CENTER -->
 <div class="center">
 
-<!-- TOP -->
-<div class="top">
-
 <div class="card">
-Saldo<br><b>$10,000</b>
-</div>
-
-<div class="card">
-Nivel<br><b class="green">Trader 3</b>
-<div class="xpBar"><div class="xpFill"></div></div>
-</div>
-
-<div class="card">
-ROI<br><b class="green">+6%</b>
-</div>
-
-</div>
-
-<!-- CHART -->
-<div class="chartBox">
-<canvas id="chart"></canvas>
+<h2>Hola Trader 👋</h2>
+Saldo: <b>$10,000</b><br>
+ROI: <span class="green">+6% mensual</span>
 </div>
 
 </div>
@@ -185,13 +126,13 @@ ROI<br><b class="green">+6%</b>
 
 <!-- GLOBE GAME -->
 <div class="widget">
-<h4>🌍 Reward System</h4>
-<div class="small">Click the globe to earn XP</div>
+<h4>🌍 Rendimiento Game</h4>
+<div class="small">Lanza la bola y gana porcentaje</div>
 
 <div id="globe"></div>
 
-<b class="green" id="reward">$0</b>
-<div class="small">XP increases speed & rewards</div>
+<b class="green" id="reward">Rendimiento: 0%</b>
+
 </div>
 
 <!-- WALLET -->
@@ -200,50 +141,29 @@ ROI<br><b class="green">+6%</b>
 <b class="green">$1,234.56</b>
 </div>
 
-<!-- NEWS -->
-<div class="widget">
-<h4>Market News</h4>
-
-<div class="news">
-<p>Bitcoin stabilizes after volatility</p>
-<p>Global markets remain neutral</p>
-<p>Crypto volume increases</p>
-<p>Tech stocks lead growth</p>
-</div>
-
-<button>Contact Trader</button>
-<button>Book Meeting</button>
-
-</div>
-
 </div>
 
 </div>
 
 <script>
 
-/* ===== LEVEL SYSTEM ===== */
+/* ================= GAME DATA ================= */
+
 let reward = 0;
-let xp = 40;
+let percentages = [0.5,1,2,3,4,5,6];
 
-/* ===== CHART ===== */
-new Chart(document.getElementById("chart"),{
-type:"line",
-data:{
-labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-datasets:[{
-data:[10000,10200,10100,10800,11200,11800,12500],
-borderColor:"#00ffcc",
-tension:0.35
-}]
-},
-options:{
-plugins:{legend:{display:false}},
-scales:{x:{display:false},y:{display:false}}
+/* ================= FUNCTION HIT ================= */
+function hit(){
+
+let value = percentages[Math.floor(Math.random()*percentages.length)];
+reward += value;
+
+document.getElementById("reward").innerText =
+"Rendimiento: " + reward.toFixed(2) + "%";
 }
-});
 
-/* ===== GLOBE ===== */
+/* ================= THREE JS GLOBE ================= */
+
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 
@@ -252,41 +172,39 @@ renderer.setSize(420,300);
 
 document.getElementById("globe").appendChild(renderer.domElement);
 
+/* globe */
 let globe = new THREE.Points(
 new THREE.SphereGeometry(1.5,32,32),
-new THREE.PointsMaterial({color:0x00ffcc,size:0.025})
+new THREE.PointsMaterial({
+color:0x00ffcc,
+size:0.02
+})
 );
 
 scene.add(globe);
 camera.position.z = 3;
 
-/* CLICK SYSTEM */
+/* CLICK = THROW BALL */
 renderer.domElement.addEventListener("click",()=>{
-
-reward += 10;
-xp += 2;
-
-if(xp > 100) xp = 100;
-
-document.querySelector(".xpFill").style.width = xp + "%";
-
+hit();
 });
 
-/* ANIMATE */
+/* ANIMATION */
 function animate(){
 
 requestAnimationFrame(animate);
 
+/* rotation depends on reward */
 globe.rotation.y += 0.002 + reward * 0.00001;
 
-document.getElementById("reward").innerText =
-"$" + reward * 12;
+/* visual evolution */
+globe.material.size = 0.02 + reward * 0.00005;
 
 renderer.render(scene,camera);
 }
 
 animate();
-  
+
 </script>
 
 </body>
