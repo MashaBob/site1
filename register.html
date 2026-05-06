@@ -32,7 +32,7 @@ body::before{
       linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
     background-size:40px 40px;
-    z-index:-2;
+    z-index:-3;
 }
 
 /* GLOW */
@@ -45,13 +45,21 @@ body::after{
     top:-200px;
     right:-250px;
     filter:blur(70px);
-    z-index:-1;
-    animation:move 6s ease-in-out infinite alternate;
+    z-index:-2;
 }
 
-@keyframes move{
-    from{transform:translateY(0);}
-    to{transform:translateY(40px);}
+/* =========================
+   SPHERE CONTAINER
+========================= */
+
+#sphere{
+    position:fixed;
+    width:600px;
+    height:600px;
+    right:-220px;
+    bottom:-200px;
+    z-index:-1;
+    opacity:0.9;
 }
 
 /* =========================
@@ -66,10 +74,7 @@ body::after{
     padding:0 80px;
 }
 
-/* =========================
-   LEFT
-========================= */
-
+/* LEFT */
 .left{
     width:50%;
 }
@@ -108,10 +113,7 @@ button{
     color:#00ffcc;
 }
 
-/* =========================
-   RIGHT REGISTER
-========================= */
-
+/* RIGHT */
 .right{
     width:400px;
 }
@@ -124,7 +126,7 @@ button{
 }
 
 /* =========================
-   GLOBE (SBOKU)
+   GLOBE VISUAL
 ========================= */
 
 .globe{
@@ -137,12 +139,6 @@ button{
     background:radial-gradient(circle, rgba(0,255,200,0.12), transparent 60%);
     filter:blur(10px);
     z-index:-1;
-    animation:spin 12s linear infinite;
-}
-
-@keyframes spin{
-    from{transform:rotate(0deg);}
-    to{transform:rotate(360deg);}
 }
 
 </style>
@@ -150,7 +146,10 @@ button{
 
 <body>
 
-<!-- GLOBE -->
+<!-- SPHERE -->
+<div id="sphere"></div>
+
+<!-- GLOBE LIGHT -->
 <div class="globe"></div>
 
 <div class="container">
@@ -161,14 +160,13 @@ button{
     <div class="calculator">
         <h2>Calcula tu capital inteligente</h2>
 
-       <input id="amount" type="number" placeholder="Capital inicial">
+        <input id="amount" type="number" placeholder="Capital inicial">
 
-<!-- FIXED RATE -->
-<div class="fixed-rate">
-  Rentabilidad fija: <b>6% mensual</b>
-</div>
+        <div style="opacity:0.8;margin:5px 0;">
+            Rentabilidad fija: <b>6% mensual</b>
+        </div>
 
-<input id="days" type="number" placeholder="Días de inversión">
+        <input id="days" type="number" placeholder="Días de inversión">
 
         <button onclick="calc()">Calcular</button>
 
@@ -202,7 +200,7 @@ button{
 </div>
 
 <!-- =========================
-   JS CALCULATOR
+   CALCULATOR FIXED
 ========================= -->
 
 <script>
@@ -211,13 +209,12 @@ function calc(){
     let amount = parseFloat(document.getElementById("amount").value);
     let days = parseFloat(document.getElementById("days").value);
 
-    let percent = 6; // FIXED
+    let percent = 6;
 
     if (isNaN(amount) || isNaN(days)) {
-    document.getElementById("result").innerHTML =
-    "Introduce todos los valores";
-    return;
-}
+        document.getElementById("result").innerHTML =
+        "Introduce todos los valores";
+        return;
     }
 
     let result = amount * Math.pow((1 + percent/100), days);
@@ -225,11 +222,10 @@ function calc(){
     document.getElementById("result").innerHTML =
     "Resultado: $" + result.toFixed(2);
 }
-}
 </script>
 
 <!-- =========================
-   FIREBASE
+   FIREBASE (GOOGLE + FACEBOOK)
 ========================= -->
 
 <script type="module">
@@ -237,7 +233,6 @@ function calc(){
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyC40P7qavWWL5VMplPulXzzbOptXrjdV-I",
   authDomain: "capital-inteligente-14b57.firebaseapp.com",
@@ -252,34 +247,76 @@ const auth = getAuth(app);
 
 /* GOOGLE */
 window.googleLogin = async function(){
-
     const provider = new GoogleAuthProvider();
-
     try{
         const result = await signInWithPopup(auth, provider);
         alert("Bienvenida " + result.user.displayName);
         window.location.href = "dashboard.html";
     }catch(e){
         alert("Error Google Login");
-        console.log(e);
     }
 }
 
 /* FACEBOOK */
 window.loginWithFacebook = async function(){
-
     const provider = new FacebookAuthProvider();
-
     try{
-        const result = await signInWithPopup(auth, provider);
-        alert("Facebook login OK");
+        await signInWithPopup(auth, provider);
         window.location.href = "dashboard.html";
     }catch(e){
         alert("Error Facebook Login");
-        console.log(e);
     }
 }
 
+</script>
+
+<!-- =========================
+   3D SPHERE (MOUSE CONTROL)
+========================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+<script>
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+
+let renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true });
+renderer.setSize(600,600);
+document.getElementById("sphere").appendChild(renderer.domElement);
+
+let geometry = new THREE.SphereGeometry(2, 32, 32);
+
+let material = new THREE.PointsMaterial({
+    color: 0x00ffcc,
+    size: 0.03
+});
+
+let sphere = new THREE.Points(geometry, material);
+scene.add(sphere);
+
+camera.position.z = 5;
+
+let mouseX = 0;
+let mouseY = 0;
+
+document.addEventListener("mousemove", (e)=>{
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+function animate(){
+    requestAnimationFrame(animate);
+
+    sphere.rotation.y += 0.002;
+    sphere.rotation.x += 0.001;
+
+    sphere.rotation.y += mouseX * 0.01;
+    sphere.rotation.x += mouseY * 0.01;
+
+    renderer.render(scene, camera);
+}
+
+animate();
 </script>
 
 </body>
