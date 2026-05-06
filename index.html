@@ -1,34 +1,73 @@
+<!-- ===================================================== -->
+<!-- HTML5 ДОКУМЕНТ -->
+<!-- ===================================================== -->
+
 <!DOCTYPE html>
-<!-- Тип документа HTML5 -->
+
+<!-- ===================================================== -->
+<!-- ОСНОВНОЙ HTML -->
+<!-- lang="es" = язык сайта испанский -->
+<!-- ===================================================== -->
 
 <html lang="es">
 
 <head>
 
+<!-- ===================================================== -->
+<!-- UTF-8 = кодировка текста -->
+<!-- чтобы русский/испанский отображались нормально -->
+<!-- ===================================================== -->
+
 <meta charset="UTF-8">
+
+<!-- ===================================================== -->
+<!-- НАЗВАНИЕ ВКЛАДКИ -->
+<!-- ===================================================== -->
 
 <title>Capital Inteligente</title>
 
+<!-- ===================================================== -->
+<!-- CSS -->
+<!-- CSS отвечает за ВНЕШНИЙ ВИД сайта -->
+<!-- ===================================================== -->
+
 <style>
 
-/* ========================= */
-/* ОСНОВНЫЕ СТИЛИ */
-/* ========================= */
+/* ===================================================== */
+/* BODY = ВСЯ СТРАНИЦА */
+/* ===================================================== */
 
 body{
+
     margin:0;
+    /* убираем белые отступы браузера */
+
     background:#0b1220;
+    /* фон сайта */
+
     font-family:Arial;
+    /* шрифт */
+
     color:white;
+    /* цвет текста */
+
     overflow-x:hidden;
+    /* запрещаем горизонтальный скролл */
+
     position:relative;
+
 }
 
+/* ===================================================== */
 /* ФОНОВАЯ СЕТКА */
+/* ===================================================== */
 
 body::before{
+
     content:"";
+
     position:fixed;
+
     width:100%;
     height:100%;
 
@@ -39,119 +78,201 @@ body::before{
     background-size:40px 40px;
 
     z-index:-1;
+
 }
 
-/* ========================= */
+/* ===================================================== */
 /* ГЛАВНЫЙ КОНТЕЙНЕР */
-/* ========================= */
+/* container = главная коробка сайта */
+/* ===================================================== */
 
 .container{
+
     display:flex;
+    /* flex = элементы становятся в ряд */
+
     justify-content:space-between;
+    /* раздвигает блоки */
+
     align-items:flex-start;
+
     padding:60px;
+
 }
 
-/* ========================= */
+/* ===================================================== */
 /* ЛЕВАЯ ЧАСТЬ */
-/* ========================= */
+/* ===================================================== */
 
 .left{
-    width:38%;
+
+    width:35%;
+
+    margin-top:40px;
+
 }
 
-/* маленький текст */
+/* ===================================================== */
+/* МАЛЕНЬКИЙ ТЕКСТ */
+/* ===================================================== */
 
 .small{
-    font-size:14px;
+
+    font-size:15px;
+
     opacity:0.7;
+    /* прозрачность */
+
 }
 
-/* зелёный текст */
+/* ===================================================== */
+/* ЗЕЛЕНЫЙ ТЕКСТ */
+/* ===================================================== */
 
 .green{
+
     color:#00ffcc;
-    font-size:20px;
-    margin-top:5px;
+
+    font-size:22px;
+
+    margin-top:8px;
+
 }
 
-/* заголовок */
+/* ===================================================== */
+/* ГЛАВНЫЙ ЗАГОЛОВОК */
+/* ===================================================== */
 
 h1{
-    font-size:72px;
+
+    font-size:86px;
+
     line-height:0.95;
-    margin:20px 0;
+
+    margin:25px 0;
 
     text-shadow:
-    0 0 20px rgba(255,255,255,0.15);
+    0 0 25px rgba(255,255,255,0.15);
+
 }
 
-/* описание */
+/* ===================================================== */
+/* ОПИСАНИЕ */
+/* ===================================================== */
 
 .desc{
-    opacity:0.7;
-    margin-bottom:20px;
+
+    opacity:0.75;
+
+    margin-bottom:25px;
+
     font-size:15px;
-    line-height:1.5;
+
+    line-height:1.6;
+
+    color:#94a3b8;
+
 }
 
-/* кнопка */
+/* ===================================================== */
+/* КНОПКА */
+/* ===================================================== */
 
 button{
+
     background:#00ffcc;
+
     border:none;
-    padding:15px 30px;
-    border-radius:12px;
+
+    padding:16px 34px;
+
+    border-radius:14px;
+
     font-size:16px;
+
     cursor:pointer;
+
     transition:0.3s;
+    /* плавная анимация */
 
     box-shadow:
-    0 0 20px rgba(0,255,200,0.2);
+    0 0 20px rgba(0,255,200,0.25);
+
 }
 
+/* ===================================================== */
+/* HOVER КНОПКИ */
+/* hover = когда навели мышку */
+/* ===================================================== */
+
 button:hover{
+
     transform:translateY(-3px);
 
     box-shadow:
     0 0 35px rgba(0,255,200,0.4);
+
 }
 
-/* ========================= */
-/* БЛОК ЦЕН */
-/* ========================= */
+/* ===================================================== */
+/* LIVE ЦЕНЫ */
+/* ===================================================== */
 
 .prices{
+
     display:flex;
-    gap:10px;
-    margin-top:25px;
+
+    gap:12px;
+
+    margin-top:30px;
+
 }
 
+/* ===================================================== */
+/* КАРТОЧКИ ЦЕН */
+/* ===================================================== */
+
 .prices span{
+
     background:#1a2335;
-    padding:10px 15px;
-    border-radius:12px;
+
+    padding:12px 18px;
+
+    border-radius:14px;
+
     font-size:14px;
 
     border:1px solid rgba(255,255,255,0.05);
 
     box-shadow:
     0 0 20px rgba(0,255,200,0.04);
+
 }
 
-/* ========================= */
-/* КАРТОЧКИ */
-/* ========================= */
+/* ===================================================== */
+/* БЛОК КАРТОЧЕК */
+/* ===================================================== */
 
 .stats-advanced{
+
     display:flex;
+
     gap:20px;
+
     margin-top:40px;
+
     flex-wrap:wrap;
+
 }
 
+/* ===================================================== */
+/* КАРТОЧКА */
+/* ===================================================== */
+
 .card{
+
     position:relative;
+
     overflow:hidden;
 
     background:rgba(255,255,255,0.03);
@@ -160,7 +281,7 @@ button:hover{
 
     border-radius:18px;
 
-    padding:20px 24px;
+    padding:22px 26px;
 
     min-width:180px;
 
@@ -170,9 +291,15 @@ button:hover{
 
     box-shadow:
     0 0 25px rgba(0,255,200,0.05);
+
 }
 
+/* ===================================================== */
+/* КРУГ В КАРТОЧКЕ */
+/* ===================================================== */
+
 .card::before{
+
     content:"";
 
     position:absolute;
@@ -186,211 +313,154 @@ button:hover{
 
     top:-40px;
     right:-40px;
+
 }
 
+/* ===================================================== */
+/* HOVER КАРТОЧКИ */
+/* ===================================================== */
+
 .card:hover{
+
     transform:translateY(-4px);
 
     box-shadow:
     0 0 30px rgba(0,255,200,0.2);
+
 }
 
+/* ===================================================== */
+/* ТЕКСТ В КАРТОЧКАХ */
+/* ===================================================== */
+
 .label{
+
     font-size:13px;
+
     color:#9ca3af;
+
 }
 
 .value{
-    font-size:24px;
+
+    font-size:26px;
+
     font-weight:bold;
+
     color:white;
+
 }
 
 .value.green{
+
     color:#00ffc8;
+
 }
 
-.desc{
-    font-size:12px;
-    color:#6b7280;
-}
-
-/* ========================= */
+/* ===================================================== */
 /* ПРАВАЯ ЧАСТЬ */
-/* ========================= */
+/* ===================================================== */
 
 .right{
-    width:700px;
+
+    width:900px;
 
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     justify-content:flex-start;
 
     margin-left:20px;
-    margin-top:-60px;
+
+    margin-top:-40px;
+
 }
 
-/* ========================= */
-/* КАЛЬКУЛЯТОР */
-/* ========================= */
-
-.calc-box{
-
-    width:620px;
-
-    background:rgba(255,255,255,0.03);
-
-    border:1px solid rgba(0,255,200,0.15);
-
-    border-radius:24px;
-
-    padding:30px;
-
-    margin-bottom:30px;
-
-    backdrop-filter:blur(12px);
-
-    box-shadow:
-    0 0 30px rgba(0,255,200,0.05);
-}
-
-.calc-box h3{
-
-    font-size:42px;
-
-    margin-top:0;
-
-    margin-bottom:25px;
-
-    color:white;
-}
-
-.calc-inputs{
-
-    display:flex;
-
-    gap:15px;
-
-    flex-wrap:wrap;
-}
-
-.calc-inputs input{
-
-    flex:1;
-
-    min-width:150px;
-
-    background:#101827;
-
-    border:1px solid rgba(255,255,255,0.08);
-
-    color:white;
-
-    padding:16px;
-
-    border-radius:14px;
-
-    font-size:15px;
-
-    outline:none;
-
-    box-shadow:
-    0 0 15px rgba(0,255,200,0.05);
-}
-
-.calc-box button{
-
-    margin-top:20px;
-
-    width:100%;
-}
-
-#result{
-
-    margin-top:20px;
-
-    font-size:28px;
-
-    font-weight:bold;
-
-    color:#00ffcc;
-}
-
-/* ========================= */
-/* ОБЁРТКА ШАРА */
-/* ========================= */
+/* ===================================================== */
+/* ОБЕРТКА ШАРА */
+/* ===================================================== */
 
 .sphere-wrap{
+
     position:relative;
 
-    width:520px;
-    height:520px;
+    width:760px;
+    height:760px;
 
     display:flex;
 
     justify-content:center;
     align-items:center;
 
-    margin-bottom:0;
 }
 
-/* ========================= */
-/* КОНТЕЙНЕР ШАРА */
-/* ========================= */
+/* ===================================================== */
+/* ГЛОБУС */
+/* ===================================================== */
 
 .globe-container{
+
     position:relative;
 
-    width:500px;
-    height:500px;
+    width:700px;
+    height:700px;
 
     z-index:2;
+
 }
 
-/* ========================= */
+/* ===================================================== */
 /* CANVAS */
-/* ========================= */
+/* canvas = холст для рисования шара */
+/* ===================================================== */
 
 .globe-container canvas{
+
     position:absolute;
 
     top:0;
     left:0;
 
-    width:500px;
-    height:500px;
+    width:700px;
+    height:700px;
+
 }
 
-/* ========================= */
+/* ===================================================== */
 /* СВЕЧЕНИЕ */
-/* ========================= */
+/* ===================================================== */
 
 .glow{
+
     position:absolute;
 
-    width:320px;
-    height:320px;
+    width:480px;
+    height:480px;
 
     background:radial-gradient(
         circle,
-        rgba(0,255,200,0.22),
+        rgba(0,255,200,0.25),
         transparent
     );
 
-    top:100px;
-    left:100px;
+    top:120px;
+    left:120px;
 
-    filter:blur(20px);
+    filter:blur(30px);
 
     z-index:1;
+
 }
 
-/* ========================= */
+/* ===================================================== */
 /* ОРБИТЫ */
-/* ========================= */
+/* ===================================================== */
 
 .orbit{
+
     position:absolute;
 
     border:1px solid rgba(0,255,200,0.08);
@@ -398,57 +468,80 @@ button:hover{
     border-radius:50%;
 
     z-index:1;
+
 }
 
-/* ========================= */
-/* ГОРОДА */
-/* ========================= */
+/* ===================================================== */
+/* СТРАНЫ */
+/* страны вынесены ЗА шар */
+/* ===================================================== */
 
 .city{
+
     position:absolute;
 
     transform:translate(-50%,-50%);
 
     color:#00ffc3;
 
-    font-size:11px;
+    font-size:13px;
 
-    padding:4px 8px;
+    padding:8px 14px;
 
-    border-radius:10px;
+    border-radius:14px;
 
-    background:rgba(0,255,200,0.06);
+    background:rgba(0,255,200,0.08);
 
     border:1px solid rgba(0,255,200,0.25);
 
     white-space:nowrap;
 
-    z-index:3;
+    z-index:4;
+
+    box-shadow:
+    0 0 20px rgba(0,255,200,0.12);
+
+    backdrop-filter:blur(10px);
+
 }
 
-/* ========================= */
+/* ===================================================== */
+/* ЛИНИИ GLOBAL NETWORK */
+/* ===================================================== */
+
+.connection{
+
+    position:absolute;
+
+    height:2px;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(0,255,200,0.8),
+        transparent
+    );
+
+    z-index:2;
+
+    opacity:0.7;
+
+    box-shadow:
+    0 0 12px rgba(0,255,200,0.4);
+
+}
+
+/* ===================================================== */
 /* ГРАФИК */
-/* ========================= */
+/* ===================================================== */
 
 .chart{
-    width:620px;
 
-    margin-top:-20px;
-}
+    width:700px;
 
-/* ========================= */
-/* АНИМАЦИЯ */
-/* ========================= */
+    margin-top:-80px;
 
-@keyframes glow{
-
-    from{
-        opacity:0.3;
-    }
-
-    to{
-        opacity:1;
-    }
 }
 
 </style>
@@ -457,9 +550,15 @@ button:hover{
 
 <body>
 
+<!-- ===================================================== -->
+<!-- ГЛАВНЫЙ КОНТЕЙНЕР -->
+<!-- ===================================================== -->
+
 <div class="container">
 
+<!-- ===================================================== -->
 <!-- ЛЕВАЯ ЧАСТЬ -->
+<!-- ===================================================== -->
 
 <div class="left">
 
@@ -468,7 +567,7 @@ Asesoria y Gestoria Diversificada
 </div>
 
 <div class="green">
-Estrategias automatizadas
+Global AI Financial Network
 </div>
 
 <h1>
@@ -480,11 +579,19 @@ Inteligente
 Optimiza tus inversiones con datos reales del mercado en tiempo real.
 </div>
 
+<!-- ===================================================== -->
+<!-- КНОПКА ПЕРЕХОДА -->
+<!-- ===================================================== -->
+
 <button onclick="window.location.href='register.html'">
-    Comenzar ahora
+
+Comenzar ahora
+
 </button>
 
-<!-- ЦЕНЫ -->
+<!-- ===================================================== -->
+<!-- LIVE ЦЕНЫ -->
+<!-- ===================================================== -->
 
 <div class="prices">
 
@@ -496,7 +603,9 @@ Optimiza tus inversiones con datos reales del mercado en tiempo real.
 
 </div>
 
+<!-- ===================================================== -->
 <!-- КАРТОЧКИ -->
+<!-- ===================================================== -->
 
 <div class="stats-advanced">
 
@@ -552,124 +661,123 @@ Relación promedio
 
 </div>
 
+<!-- ===================================================== -->
 <!-- ПРАВАЯ ЧАСТЬ -->
+<!-- ===================================================== -->
 
 <div class="right">
 
-<!-- КАЛЬКУЛЯТОР -->
-
-<div class="calc-box">
-
-<h3>
-Proyección inteligente
-</h3>
-
-<div class="calc-inputs">
-
-<input
-type="number"
-id="amount"
-placeholder="Monto inicial">
-
-<input
-type="number"
-id="percent"
-placeholder="% mensual">
-
-<input
-type="number"
-id="months"
-placeholder="Meses">
-
-</div>
-
-<button onclick="calculateProfit()">
-Calcular rendimiento
-</button>
-
-<div id="result"></div>
-
-</div>
-
-<!-- ШАР -->
+<!-- ===================================================== -->
+<!-- ОБЕРТКА ШАРА -->
+<!-- ===================================================== -->
 
 <div class="sphere-wrap">
 
 <div class="glow"></div>
 
+<!-- ===================================================== -->
+<!-- GLOBAL NETWORK ЛИНИИ -->
+<!-- ===================================================== -->
+
+<div class="connection"
+style="width:240px; top:220px; left:260px; transform:rotate(20deg);">
+</div>
+
+<div class="connection"
+style="width:300px; top:350px; left:250px; transform:rotate(-12deg);">
+</div>
+
+<div class="connection"
+style="width:220px; top:480px; left:320px; transform:rotate(28deg);">
+</div>
+
+<!-- ===================================================== -->
+<!-- ОРБИТЫ -->
+<!-- ===================================================== -->
+
 <div class="orbit"
-style="width:300px;height:300px;top:100px;left:100px;">
+style="width:420px;height:420px;top:140px;left:140px;">
 </div>
 
 <div class="orbit"
-style="width:360px;height:360px;top:70px;left:70px;">
+style="width:520px;height:520px;top:90px;left:90px;">
 </div>
 
 <div class="orbit"
-style="width:420px;height:420px;top:40px;left:40px;">
+style="width:620px;height:620px;top:40px;left:40px;">
 </div>
+
+<!-- ===================================================== -->
+<!-- ГЛОБУС -->
+<!-- ===================================================== -->
 
 <div class="globe-container">
 
 <canvas
 id="sphere"
-width="500"
-height="500">
+width="700"
+height="700">
 </canvas>
 
-<div class="city" style="top:18%; left:35%">
-USA +0.32%
+<!-- ===================================================== -->
+<!-- СТРАНЫ -->
+<!-- ===================================================== -->
+
+<div class="city" style="top:14%; left:30%">
+🇺🇸 USA
 </div>
 
-<div class="city" style="top:28%; left:30%">
-Canada +0.29%
+<div class="city" style="top:24%; left:22%">
+🇨🇦 Canada
 </div>
 
-<div class="city" style="top:40%; left:25%">
-Mexico +0.18%
+<div class="city" style="top:42%; left:15%">
+🇲🇽 Mexico
 </div>
 
-<div class="city" style="top:30%; left:50%">
-UK +0.45%
+<div class="city" style="top:28%; left:52%">
+🇬🇧 UK
 </div>
 
-<div class="city" style="top:38%; left:55%">
-France +0.33%
+<div class="city" style="top:38%; left:62%">
+🇫🇷 France
 </div>
 
-<div class="city" style="top:45%; left:60%">
-Germany +0.38%
+<div class="city" style="top:46%; left:72%">
+🇩🇪 Germany
 </div>
 
-<div class="city" style="top:50%; left:65%">
-Dubai +0.52%
+<div class="city" style="top:52%; left:82%">
+🇦🇪 Dubai
 </div>
 
-<div class="city" style="top:42%; left:78%">
-Japan +0.67%
+<div class="city" style="top:34%; left:92%">
+🇯🇵 Japan
 </div>
 
-<div class="city" style="top:52%; left:85%">
-Hong Kong +0.41%
+<div class="city" style="top:48%; left:98%">
+🇭🇰 Hong Kong
 </div>
 
-<div class="city" style="top:62%; left:80%">
-Singapore +0.38%
+<div class="city" style="top:64%; left:90%">
+🇸🇬 Singapore
 </div>
 
-<div class="city" style="top:72%; left:70%">
-Australia +0.26%
+<div class="city" style="top:78%; left:76%">
+🇦🇺 Australia
 </div>
 
-<div class="city" style="top:65%; left:45%">
-Brazil +0.21%
+<div class="city" style="top:68%; left:38%">
+🇧🇷 Brazil
 </div>
 
 </div>
 
 </div>
 
+<!-- ===================================================== -->
 <!-- ГРАФИК -->
+<!-- ===================================================== -->
 
 <div class="chart">
 
@@ -683,239 +791,47 @@ Brazil +0.21%
 
 </div>
 
+<!-- ===================================================== -->
+<!-- JAVASCRIPT -->
+<!-- JavaScript = логика сайта -->
+<!-- ===================================================== -->
+
 <script>
 
+/* ===================================================== */
 /* CANVAS */
+/* ===================================================== */
 
-const canvas = document.getElementById("sphere");
+const canvas =
+document.getElementById("sphere");
 
-const ctx = canvas.getContext("2d");
+/* ===================================================== */
+/* ctx = инструмент рисования */
+/* ===================================================== */
+
+const ctx =
+canvas.getContext("2d");
+
+/* ===================================================== */
+/* ПЕРЕМЕННЫЕ МЫШКИ */
+/* ===================================================== */
 
 let mouseX = 0;
 let mouseY = 0;
 
+/* ===================================================== */
+/* УГЛЫ ПОВОРОТА */
+/* ===================================================== */
+
 let angleX = 0;
 let angleY = 0;
 
+/* ===================================================== */
+/* АВТОВРАЩЕНИЕ */
+/* ===================================================== */
+
 let auto = 0;
-
-canvas.addEventListener("mousemove", e => {
-
-let rect = canvas.getBoundingClientRect();
-
-mouseX = (e.clientX - rect.left - 250) / 250;
-
-mouseY = (e.clientY - rect.top - 250) / 250;
-
-});
-
-const pts = [];
-
-for(let i = 0; i < 1200; i++){
-
-let t = Math.random() * Math.PI * 2;
-
-let p = Math.acos(Math.random() * 2 - 1);
-
-let r = 180;
-
-pts.push({
-
-x:r*Math.sin(p)*Math.cos(t),
-
-y:r*Math.sin(p)*Math.sin(t),
-
-z:r*Math.cos(p)
-
-});
-
-}
-
-function draw(){
-
-ctx.clearRect(0,0,500,500);
-
-auto += 0.002;
-
-angleX += (mouseY - angleX) * 0.05;
-
-angleY += (mouseX + auto - angleY) * 0.05;
-
-pts.forEach(p => {
-
-let x = p.x;
-
-let y = p.y*Math.cos(angleX)-p.z*Math.sin(angleX);
-
-let z = p.y*Math.sin(angleX)+p.z*Math.cos(angleX);
-
-let x2 = x*Math.cos(angleY)-z*Math.sin(angleY);
-
-let z2 = x*Math.sin(angleY)+z*Math.cos(angleY);
-
-let scale = 400/(400+z2);
-
-let px = 250 + x2*scale;
-
-let py = 250 + y*scale;
-
-ctx.beginPath();
-
-ctx.arc(px,py,1.5*scale,0,Math.PI*2);
-
-ctx.fillStyle = "#00ffcc";
-
-ctx.fill();
-
-});
-
-requestAnimationFrame(draw);
-
-}
-
-draw();
-
-/* ЗАГРУЗКА ЦЕН */
-
-async function loadPrices(){
-
-try{
-
-const res = await fetch(
-"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,mxn"
-);
-
-const data = await res.json();
-
-document.getElementById("btc").innerHTML =
-"BTC: $" + data.bitcoin.usd.toLocaleString();
-
-document.getElementById("eth").innerHTML =
-"ETH: $" + data.ethereum.usd.toLocaleString();
-
-document.getElementById("mxn").innerHTML =
-"MXN: " + data.bitcoin.mxn.toLocaleString();
-
-}catch(e){
-
-console.log(e);
-
-}
-
-}
-
-loadPrices();
-
-setInterval(loadPrices,10000);
-
-/* АНИМАЦИЯ */
-
-function animateValue(id,start,end,duration){
-
-let obj = document.getElementById(id);
-
-let startTime = null;
-
-function step(timestamp){
-
-if(!startTime){
-
-startTime = timestamp;
-
-}
-
-let progress = Math.min(
-(timestamp - startTime) / duration,
-1
-);
-
-if(id === "profit"){
-
-obj.innerHTML =
-"+" + Math.floor(
-progress * (end - start) + start
-);
-
-}else{
-
-obj.innerHTML =
-Math.floor(
-progress * (end - start) + start
-) + "%";
-
-}
-
-if(progress < 1){
-
-requestAnimationFrame(step);
-
-}
-
-}
-
-requestAnimationFrame(step);
-
-}
-
-animateValue("profit",0,9434,2000);
-
-animateValue("win",0,83,2000);
-
-/* КАЛЬКУЛЯТОР */
-
-function calculateProfit() {
-
-let amount =
-parseFloat(document.getElementById("amount").value);
-
-let percent =
-parseFloat(document.getElementById("percent").value);
-
-let months =
-parseInt(document.getElementById("months").value);
-
-if(!amount || !percent || !months){
-
-document.getElementById("result").innerHTML =
-"Completa todos los campos";
-
-return;
-
-}
-
-let total = amount;
-
-for(let i = 0; i < months; i++){
-
-total += total * (percent / 100);
-
-}
-
-document.getElementById("result").innerHTML =
-"Resultado: $" + total.toFixed(2);
-
-}
-
-/* TRADINGVIEW */
-
-new TradingView.widget({
-
-width:620,
-
-height:360,
-
-symbol:"BINANCE:BTCUSDT",
-
-interval:"15",
-
-theme:"dark",
-
-container_id:"chart"
-
-});
 
 </script>
 
 </body>
-
-</html>
