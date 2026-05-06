@@ -27,7 +27,37 @@ Registro | Capital Inteligente
 </title>
 
 <style>
+<script>
+function calc(){
 
+    let amount = parseFloat(document.getElementById("amount").value);
+    let percent = parseFloat(document.getElementById("percent").value);
+    let days = parseFloat(document.getElementById("days").value);
+
+    if (
+        isNaN(amount) ||
+        isNaN(percent) ||
+        isNaN(days)
+    ) {
+        document.getElementById("result").innerHTML =
+        "Introduce todos los valores";
+        return;
+    }
+
+    let result = amount * Math.pow((1 + percent/100), days);
+
+    document.getElementById("result").innerHTML =
+    "Resultado: $ " + result.toFixed(2);
+}
+  }
+
+  let result = amount * Math.pow((1 + percent/100), days);
+
+  document.getElementById("result").innerHTML =
+  "Resultado: $" + result.toFixed(2);
+
+}
+</script>
 /* ================================================= */
 /* ОСНОВНЫЕ СТИЛИ */
 /* ================================================= */
@@ -696,29 +726,29 @@ input:focus{
 <!-- ================================================= -->
 <!-- LEFT -->
 <!-- ================================================= -->
-
 <div class="left">
 
-<div class="small">
-Asesoría financiera automatizada
-</div>
+  <div class="calculator">
 
-<div class="green">
-Inteligencia artificial para inversiones
-</div>
+    <h2>Calcula tu capital inteligente</h2>
 
-<h1>
+    <p class="sub">
+      Simula tus inversiones en tiempo real
+    </p>
 
-Capital<br>
-Inteligente
+    <input id="amount" type="number" placeholder="Capital inicial ($)">
 
-</h1>
+    <input id="percent" type="number" placeholder="Rentabilidad (%)">
 
-<div class="desc">
+    <input id="days" type="number" placeholder="Días de inversión">
 
-Plataforma moderna para análisis financiero,
-automatización de estrategias y monitoreo
-inteligente de mercados globales.
+    <button onclick="calc()">Calcular</button>
+
+    <div class="result" id="result">
+      Resultado: $0
+    </div>
+
+  </div>
 
 </div>
 
