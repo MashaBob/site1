@@ -99,7 +99,7 @@ input{
     color:white;
 }
 
-/* button */
+/* register button */
 .register-btn{
     width:100%;
     padding:15px;
@@ -111,11 +111,11 @@ input{
     cursor:pointer;
 }
 
-/* ===================== SOCIAL BUTTONS ===================== */
+/* social buttons */
 .social-btn{
     width:100%;
-    padding:12px;
     margin-top:10px;
+    padding:12px;
     border:none;
     border-radius:10px;
     cursor:pointer;
@@ -124,8 +124,6 @@ input{
 
 .google{background:white;color:black;}
 .facebook{background:#1877f2;color:white;}
-.telegram{background:#229ED9;color:white;}
-.apple{background:black;color:white;}
 
 </style>
 
@@ -165,15 +163,12 @@ input{
 
 <input type="email" placeholder="Email">
 <input type="password" placeholder="Password">
-<input type="password" placeholder="Confirmar password">
 
 <button class="register-btn">Crear cuenta</button>
 
-<!-- SOCIAL -->
+<!-- SOCIAL LOGIN -->
 <button class="social-btn google" onclick="googleLogin()">Google</button>
 <button class="social-btn facebook" onclick="loginWithFacebook()">Facebook</button>
-<button class="social-btn telegram">Telegram</button>
-<button class="social-btn apple">Apple</button>
 
 </div>
 
@@ -181,7 +176,7 @@ input{
 
 </div>
 
-<!-- ================= CALC SCRIPT ================= -->
+<!-- ================= CALCULATOR JS ================= -->
 <script>
 
 function calc(){
@@ -200,66 +195,62 @@ function calc(){
 
     document.getElementById("result").innerHTML =
     "Resultado: $ " + result.toFixed(2);
+
 }
 
 </script>
 
-<!-- ================= FIREBASE GOOGLE ================= -->
+<!-- ================= FIREBASE (GOOGLE + FACEBOOK) ================= -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* FIREBASE CONFIG */
+/* ===== YOUR FIREBASE CONFIG ===== */
 const firebaseConfig = {
   apiKey: "TU_API_KEY",
-  authDomain: "TU_PROJECT.firebaseapp.com",
-  projectId: "TU_PROJECT",
-  storageBucket: "TU_PROJECT.appspot.com",
-  messagingSenderId: "XXX",
-  appId: "XXX"
+  authDomain: "capital-inteligente-14b57.firebaseapp.com",
+  projectId: "capital-inteligente-14b57",
+  storageBucket: "capital-inteligente-14b57.appspot.com",
+  messagingSenderId: "636226243947",
+  appId: "1:636226243947:web:fdca179b00f37135e7902e"
 };
 
+/* INIT ONCE */
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 
+/* PROVIDERS */
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+
+/* ================= GOOGLE LOGIN ================= */
 window.googleLogin = async function(){
 
-    try{
-        const result = await signInWithPopup(auth, provider);
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
         window.location.href = "dashboard.html";
-    }catch(error){
+    } catch (e) {
+        console.log(e);
         alert("Google login error");
     }
 
 }
 
-</script>
-
-<!-- ================= FACEBOOK ================= -->
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, FacebookAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROJECT.firebaseapp.com",
-  projectId: "TU_PROJECT",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new FacebookAuthProvider();
-
+/* ================= FACEBOOK LOGIN ================= */
 window.loginWithFacebook = async function(){
 
-    try{
-        const result = await signInWithPopup(auth, provider);
+    try {
+        const result = await signInWithPopup(auth, facebookProvider);
         window.location.href = "dashboard.html";
-    }catch(error){
-        alert(error.message);
+    } catch (e) {
+        console.log(e);
+        alert("Facebook login error: " + e.message);
     }
 
 }
