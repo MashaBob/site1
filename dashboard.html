@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capital AI Pro Dashboard</title>
+<title>Capital AI Pro | Live Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
@@ -13,181 +13,141 @@
 body{
 margin:0;
 font-family:Arial;
-background:#060b14;
+background:#050914;
 color:white;
 overflow:hidden;
 }
 
-.container{
+/* MAIN SPLIT */
+.wrapper{
 display:flex;
 height:100vh;
 }
 
-/* SIDEBAR */
-.sidebar{
-width:220px;
-background:#0b1220;
-padding:20px;
-}
-
-.logo{
-color:#00ffcc;
-font-weight:bold;
-margin-bottom:30px;
-}
-
-.menu div{
-padding:10px;
-margin:8px 0;
-border-radius:10px;
-cursor:pointer;
-}
-
-.menu div:hover{
-background:#111a2e;
-}
-
-/* MAIN */
-.main{
-flex:1;
+/* LEFT PANEL */
+.left{
+width:65%;
 padding:20px;
 overflow:auto;
 }
 
-/* TOP */
+/* RIGHT PANEL */
+.right{
+width:35%;
+background:#070f1f;
+position:relative;
+}
+
+/* TOP INFO */
 .top{
 display:flex;
-gap:15px;
+gap:10px;
 }
 
 .card{
 flex:1;
 background:#0e1628;
-padding:15px;
-border-radius:15px;
+padding:12px;
+border-radius:12px;
 }
-
-.green{color:#00ffcc}
 
 /* CHART */
 .chartBox{
-margin-top:20px;
+margin-top:15px;
 background:#0e1628;
 padding:15px;
 border-radius:15px;
 }
 
-/* WALLET */
-.wallet{
-margin-top:20px;
+/* NEWS */
+.news{
+margin-top:15px;
 background:#0e1628;
 padding:15px;
 border-radius:15px;
 }
 
-/* AI */
-.ai{
-margin-top:20px;
-background:#0e1628;
-padding:15px;
-border-radius:15px;
+.news h3{
+margin-top:0;
+color:#00ffcc;
+}
+
+.news-item{
+padding:8px 0;
+border-bottom:1px solid #1a2440;
+font-size:13px;
 }
 
 /* GLOBE */
-.globeBox{
-position:absolute;
-right:20px;
-top:80px;
-width:320px;
-height:320px;
-}
-
-canvas{
+#globe{
 width:100%;
 height:100%;
 }
 
-.glow{
+/* DIVIDER LINE */
+.divider{
 position:absolute;
-right:-120px;
-bottom:-120px;
-width:400px;
-height:400px;
-background:radial-gradient(circle,#00ffcc33,transparent 60%);
-filter:blur(20px);
+left:0;
+top:0;
+width:2px;
+height:100%;
+background:#00ffcc33;
 }
+
+.green{color:#00ffcc}
 
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="wrapper">
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-<div class="logo">CAPITAL AI PRO</div>
-
-<div class="menu">
-<div>📊 Dashboard</div>
-<div>💼 Wallet</div>
-<div>📈 AI Signals</div>
-<div>🌍 Markets</div>
-<div>⚙ Settings</div>
-</div>
-</div>
-
-<!-- MAIN -->
-<div class="main">
+<!-- LEFT -->
+<div class="left">
 
 <h2>Hola 👋 Trader</h2>
 
-<!-- TOP CARDS -->
 <div class="top">
 
 <div class="card">
-Saldo<br>
-<h3>$10,000</h3>
+Saldo<br><b>$10,000</b>
 </div>
 
 <div class="card">
-ROI<br>
-<h3 class="green">+6% mensual</h3>
+ROI<br><b class="green">+6% mensual</b>
 </div>
 
 <div class="card">
-Riesgo<br>
-<h3>Low</h3>
+Riesgo<br><b>Low</b>
 </div>
 
 </div>
 
-<!-- CHART -->
 <div class="chartBox">
 <canvas id="chart"></canvas>
 </div>
 
-<!-- WALLET -->
-<div class="wallet">
-<h3>Wallet</h3>
-Disponible: <b class="green">$1,234.56</b><br>
-Bloqueado: $0
-</div>
+<div class="news">
+<h3>📰 AI Market News (Daily)</h3>
 
-<!-- AI -->
-<div class="ai">
-<h3>AI Activity</h3>
-<div>🤖 BTC signal detected</div>
-<div>📊 Portfolio optimized</div>
-<div>🌍 Market trend bullish</div>
+<div class="news-item">📈 BTC breaks resistance level</div>
+<div class="news-item">🌍 US inflation data impacts crypto</div>
+<div class="news-item">🤖 AI signals increase trading volume</div>
+<div class="news-item">💰 Ethereum network activity grows</div>
+<div class="news-item">📊 Market volatility expected today</div>
+
 </div>
 
 </div>
+
+<!-- RIGHT -->
+<div class="right">
+<div id="globe"></div>
+<div class="divider"></div>
 </div>
 
-<!-- GLOBE -->
-<div class="globeBox" id="globe"></div>
-<div class="glow"></div>
+</div>
 
 <script>
 
@@ -197,7 +157,7 @@ type:'line',
 data:{
 labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
 datasets:[{
-data:[10000,10300,10100,10800,11200,11800,12500],
+data:[10000,10300,10150,10900,11300,11800,12400],
 borderColor:'#00ffcc',
 tension:0.4
 }]
@@ -213,10 +173,11 @@ let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 
 let renderer = new THREE.WebGLRenderer({alpha:true});
-renderer.setSize(320,320);
+renderer.setSize(window.innerWidth*0.35,window.innerHeight);
+
 document.getElementById("globe").appendChild(renderer.domElement);
 
-/* SPHERE */
+/* sphere */
 let geometry = new THREE.SphereGeometry(1.5,32,32);
 
 let material = new THREE.PointsMaterial({
@@ -229,18 +190,11 @@ scene.add(globe);
 
 camera.position.z = 3;
 
-/* mouse control */
-let mouseX = 0;
-document.addEventListener("mousemove",(e)=>{
-mouseX = (e.clientX / window.innerWidth)*2 - 1;
-});
-
-/* animate */
+/* rotation */
 function animate(){
 requestAnimationFrame(animate);
 
 globe.rotation.y += 0.002;
-globe.rotation.x = mouseX * 0.3;
 
 renderer.render(scene,camera);
 }
