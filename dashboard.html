@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Capital AI PRO - Skill Game</title>
+<title>Capital AI PRO V6</title>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
@@ -21,39 +21,37 @@ overflow:hidden;
 /* GRID */
 .dashboard{
 display:grid;
-grid-template-columns:260px 1fr 420px;
+grid-template-columns:240px 1fr 420px;
 height:100vh;
-gap:12px;
-padding:12px;
+gap:10px;
+padding:10px;
 box-sizing:border-box;
-overflow:hidden;
 }
 
 /* SIDEBAR */
 .sidebar{
 background:#0c1324;
-border-radius:14px;
+border-radius:12px;
 padding:15px;
 }
 
 .nav{
 padding:10px;
+background:#101b33;
 margin-bottom:8px;
-border-radius:10px;
-background:#0f1a33;
+border-radius:8px;
 cursor:pointer;
-font-size:14px;
 }
 
 .nav:hover{
-background:#152545;
+background:#15264a;
 }
 
 /* CENTER */
 .center{
 display:flex;
 flex-direction:column;
-gap:12px;
+gap:10px;
 }
 
 .card{
@@ -66,20 +64,73 @@ border-radius:12px;
 .right{
 display:flex;
 flex-direction:column;
-gap:12px;
+gap:10px;
 }
 
-/* WIDGET */
 .widget{
 background:#0c1324;
-border-radius:12px;
 padding:12px;
+border-radius:12px;
 }
 
 /* GLOBE */
 #globe{
-height:280px;
-width:100%;
+height:240px;
+}
+
+/* GAME */
+.gameArea{
+position:relative;
+height:220px;
+background:#08101f;
+border-radius:12px;
+overflow:hidden;
+}
+
+.ball{
+position:absolute;
+width:16px;
+height:16px;
+border-radius:50%;
+background:#00ffcc;
+left:50%;
+bottom:10px;
+transform:translateX(-50%);
+}
+
+/* NEWS PAYWALL */
+.news{
+position:relative;
+padding:10px;
+border-radius:10px;
+background:#101b33;
+overflow:hidden;
+}
+
+.newsItem{
+font-size:12px;
+margin-bottom:6px;
+}
+
+.lockOverlay{
+position:absolute;
+inset:0;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,0.65);
+backdrop-filter: blur(4px);
+text-align:center;
+}
+
+.lockOverlay button{
+margin-top:10px;
+padding:6px;
+background:#00ffcc;
+border:none;
+border-radius:8px;
+cursor:pointer;
 }
 
 /* COLORS */
@@ -87,27 +138,13 @@ width:100%;
 .small{font-size:12px;opacity:0.7}
 
 button{
-background:#00ffcc;
-border:none;
-padding:8px;
-border-radius:8px;
-cursor:pointer;
 width:100%;
-margin-top:6px;
-}
-
-.bar{
-height:6px;
-background:#1a2742;
-border-radius:10px;
-overflow:hidden;
-margin-top:8px;
-}
-
-.fill{
-height:100%;
-width:50%;
+padding:8px;
+border:none;
+border-radius:8px;
 background:#00ffcc;
+cursor:pointer;
+margin-top:6px;
 }
 
 </style>
@@ -136,27 +173,62 @@ Saldo: <b>$10,000</b><br>
 ROI: <span class="green">+6% mensual</span>
 </div>
 
+<div class="card">
+<h4>📊 Statistics</h4>
+Trades: 128<br>
+Win rate: 63%<br>
+Profit: <span class="green">+$2,340</span>
+</div>
+
 </div>
 
 <!-- RIGHT -->
 <div class="right">
 
+<!-- GAME -->
 <div class="widget">
-<h4>🌍 Skill Trading Game</h4>
-<div class="small">Mantén click para cargar fuerza y suelta para lanzar</div>
+<h4>🎯 Skill Game</h4>
 
-<div id="globe"></div>
-
-<b class="green" id="reward">Rendimiento: 0%</b>
-
-<div class="small">Fuerza de tiro</div>
-<div class="bar"><div class="fill" id="powerBar"></div></div>
-
+<div class="gameArea" id="game">
+<div class="ball" id="ball"></div>
 </div>
 
+<b id="result">Rendimiento: 0%</b>
+</div>
+
+<!-- WALLET -->
 <div class="widget">
 <h4>Wallet</h4>
 <b class="green">$1,234.56</b>
+</div>
+
+<!-- GLOBE -->
+<div class="widget">
+<h4>🌍 Globe</h4>
+<div id="globe"></div>
+</div>
+
+<!-- NEWS -->
+<div class="widget">
+<h4>📰 Noticias</h4>
+
+<div class="news" id="newsBox">
+
+<div class="newsItem">Bitcoin estable en el mercado</div>
+<div class="newsItem">Ethereum muestra crecimiento</div>
+<div class="newsItem">Volatilidad global moderada</div>
+
+<div class="lockOverlay" id="lock">
+🔒 Premium bloqueado<br>
+<span class="small">17 MXN / mes</span>
+
+<button onclick="unlockNews()">
+Suscribirse
+</button>
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -165,84 +237,89 @@ ROI: <span class="green">+6% mensual</span>
 
 <script>
 
-/* ================= DATA ================= */
+/* ================= GAME ================= */
+
+let ball = document.getElementById("ball");
+let game = document.getElementById("game");
+
 let reward = 0;
-let power = 0;
-let charging = false;
+let pos = 0;
+let velocity = 0;
 
-/* zones (skill-based outcomes) */
-let zones = [
-{v:0.5},{v:1},{v:2},{v:3},{v:4},{v:5},{v:6}
-];
+let isDown = false;
+let startY = 0;
 
-/* ================= POWER SYSTEM ================= */
-document.addEventListener("mousedown",()=>charging=true);
-document.addEventListener("mouseup",()=>{
-charging=false;
-shoot(power);
-power = 0;
-updateBar();
+ball.addEventListener("mousedown",(e)=>{
+isDown = true;
+startY = e.clientY;
 });
 
-/* charging force */
-setInterval(()=>{
-if(charging){
-power += 2;
-if(power > 100) power = 100;
-updateBar();
+document.addEventListener("mouseup",(e)=>{
+if(!isDown) return;
+
+let force = startY - e.clientY;
+velocity = force * 0.15;
+
+isDown = false;
+});
+
+function gameLoop(){
+
+pos += velocity;
+velocity -= 0.4;
+
+ball.style.bottom = pos + "px";
+
+if(pos > 160){
+
+let value = [0.5,1,2,3,4,5,6];
+let r = value[Math.floor(Math.random()*value.length)];
+
+reward += r;
+
+document.getElementById("result").innerText =
+"🎯 HIT: " + r + "% | Total: " + reward.toFixed(2) + "%";
+
+pos = 0;
+velocity = 0;
 }
-},30);
 
-function updateBar(){
-document.getElementById("powerBar").style.width = power + "%";
+requestAnimationFrame(gameLoop);
 }
 
-/* ================= GAME LOGIC ================= */
-function shoot(p){
+gameLoop();
 
-/* skill influence */
-let index = Math.floor((p/100) * zones.length);
-if(index < 0) index = 0;
-if(index > zones.length-1) index = zones.length-1;
+/* ================= NEWS ================= */
 
-let value = zones[index].v;
+let premium = false;
 
-/* reward */
-reward += value;
-
-document.getElementById("reward").innerText =
-"Rendimiento: " + reward.toFixed(2) + "%";
+function unlockNews(){
+if(confirm("Suscripción: 17 MXN / mes")){
+premium = true;
+document.getElementById("lock").style.display = "none";
+}
 }
 
-/* ================= THREE JS GLOBE ================= */
+/* ================= GLOBE ================= */
+
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 
 let renderer = new THREE.WebGLRenderer({alpha:true});
-renderer.setSize(420,280);
-
+renderer.setSize(420,240);
 document.getElementById("globe").appendChild(renderer.domElement);
 
-/* globe */
 let globe = new THREE.Points(
 new THREE.SphereGeometry(1.5,32,32),
-new THREE.PointsMaterial({
-color:0x00ffcc,
-size:0.02
-})
+new THREE.PointsMaterial({color:0x00ffcc,size:0.02})
 );
 
 scene.add(globe);
 camera.position.z = 3;
 
-/* animation */
 function animate(){
-
 requestAnimationFrame(animate);
-
-/* dynamic speed */
-globe.rotation.y += 0.002 + reward * 0.00001;
-
+globe.rotation.y += 0.002;
 renderer.render(scene,camera);
 }
 
