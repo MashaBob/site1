@@ -1004,6 +1004,60 @@ window.googleLogin = async function(){
 }
 
 </script>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  FacebookAuthProvider,
+  signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC40P7qavWWL5VMplPulXzzbOptXrjdV-I",
+
+  authDomain: "capital-inteligente-14b57.firebaseapp.com",
+
+  projectId: "capital-inteligente-14b57",
+
+  storageBucket: "capital-inteligente-14b57.firebasestorage.app",
+
+  messagingSenderId: "636226243947",
+
+  appId: "1:636226243947:web:fdca179b00f37135e7902e",
+
+  measurementId: "G-J10B8BXZ5Q"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const provider = new FacebookAuthProvider();
+
+window.loginWithFacebook = async function () {
+
+  try {
+
+    const result = await signInWithPopup(auth, provider);
+
+    console.log(result.user);
+
+    window.location.href = "dashboard.html";
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(error.message);
+
+  }
+
+};
+
+</script>
 </body>
 
 </html>
