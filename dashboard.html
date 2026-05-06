@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Panel Trader PRO V5</title>
+<title>Trader Game V6 FIX</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
@@ -16,29 +15,30 @@ margin:0;
 background:#050914;
 color:white;
 font-family:Arial;
+overflow:hidden;
 }
 
-.layout{
+.grid{
 display:grid;
-grid-template-columns:240px 1fr 380px;
+grid-template-columns:240px 1fr 420px;
 height:100vh;
 }
 
-/* SIDEBAR */
-.sidebar{
+/* LEFT */
+.left{
 background:#0b1220;
 padding:15px;
 }
 
-.nav{
+.btn{
 padding:10px;
 background:#111b2e;
 margin-bottom:6px;
 border-radius:8px;
 }
 
-/* MAIN */
-.main{
+/* CENTER */
+.center{
 padding:15px;
 display:flex;
 flex-direction:column;
@@ -66,31 +66,37 @@ border-radius:12px;
 }
 
 /* GAME */
-.game{
-height:180px;
+.gameArea{
+height:260px;
 background:#08101f;
 border-radius:12px;
 position:relative;
 overflow:hidden;
 }
 
+/* BALL */
 .ball{
-width:18px;
-height:18px;
-background:#00ffcc;
+width:14px;
+height:14px;
 border-radius:50%;
+background:#00ffcc;
 position:absolute;
-bottom:10px;
 left:50%;
+bottom:20px;
 transform:translateX(-50%);
+}
+
+/* CANVAS OVERLAY */
+canvas{
+border-radius:12px;
 }
 
 /* NEWS */
 .news{
 position:relative;
+background:#111b2e;
 padding:10px;
 border-radius:10px;
-background:#111b2e;
 overflow:hidden;
 }
 
@@ -107,15 +113,10 @@ background:rgba(0,0,0,0.75);
 .lock button{
 margin-top:10px;
 padding:6px;
-background:#00ffcc;
 border:none;
 border-radius:8px;
+background:#00ffcc;
 cursor:pointer;
-}
-
-/* GLOBE */
-#globe{
-height:200px;
 }
 
 .green{color:#00ffcc}
@@ -125,29 +126,27 @@ height:200px;
 
 <body>
 
-<div class="layout">
+<div class="grid">
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-<h3>PANEL TRADER</h3>
-<div class="nav">Dashboard</div>
-<div class="nav">Wallet</div>
-<div class="nav">Mercado</div>
-<div class="nav">Configuración</div>
+<!-- LEFT -->
+<div class="left">
+<h3>PANEL</h3>
+<div class="btn">Dashboard</div>
+<div class="btn">Wallet</div>
+<div class="btn">Market</div>
+<div class="btn">Settings</div>
 </div>
 
-<!-- MAIN -->
-<div class="main">
+<!-- CENTER -->
+<div class="center">
 
 <div class="card">
 <h2>Hola Trader 👋</h2>
-Saldo: <b>$10,000</b><br>
-ROI: <span class="green">+6% mensual</span>
+Saldo: $10,000
 </div>
 
 <div class="card">
-<h4>📊 Estadísticas</h4>
-<canvas id="chart"></canvas>
+📊 Estadísticas
 </div>
 
 </div>
@@ -155,43 +154,34 @@ ROI: <span class="green">+6% mensual</span>
 <!-- RIGHT -->
 <div class="right">
 
-<!-- GAME -->
+<!-- GAME + GLOBE UNIFIED -->
 <div class="widget">
-<h4>🎮 Juego de habilidad</h4>
+<h4>🎮 Skill + Globe System</h4>
 
-<div class="game" id="game">
+<div class="gameArea" id="sceneBox">
 <div class="ball" id="ball"></div>
 </div>
 
-<div>Rendimiento: <b id="result">0%</b></div>
 </div>
 
 <!-- WALLET -->
 <div class="widget">
-<h4>Billetera</h4>
-<b>$1,234.56</b>
-</div>
-
-<!-- GLOBE -->
-<div class="widget">
-<h4>🌍 Globo</h4>
-<div id="globe"></div>
+Wallet: <b>$1,234.56</b>
 </div>
 
 <!-- NEWS -->
 <div class="widget">
-<h4>📰 Noticias</h4>
+📰 Noticias
 
 <div class="news">
 
-<div>Bitcoin estable en el mercado</div>
-<div>Ethereum en crecimiento</div>
-<div>Mercados globales mixtos</div>
+<div>Bitcoin estable</div>
+<div>Ethereum sube</div>
+<div>Mercado mixto</div>
 
 <div class="lock" id="lock">
-🔒 Contenido premium<br>
-17 MXN / mes
-<button onclick="unlockNews()">Desbloquear</button>
+🔒 Premium 17 MXN
+<button onclick="unlock()">Unlock</button>
 </div>
 
 </div>
@@ -204,66 +194,65 @@ ROI: <span class="green">+6% mensual</span>
 
 <script>
 
-window.onload = function(){
-
-/* ================= CHART ================= */
-const ctx = document.getElementById("chart");
-
-if(ctx){
-new Chart(ctx,{
-type:"line",
-data:{
-labels:["Lun","Mar","Mié","Jue","Vie"],
-datasets:[{
-data:[10000,10200,10150,10800,11200],
-borderColor:"#00ffcc",
-tension:0.3
-}]
-},
-options:{
-plugins:{legend:{display:false}},
-scales:{x:{display:false},y:{display:false}}
-}
-});
-}
-
-/* ================= GAME ================= */
+/* ================= STATE ================= */
 
 let ball = document.getElementById("ball");
-let pos = 0;
-let speed = 0;
-let drag = false;
+let sceneBox = document.getElementById("sceneBox");
+
+let speedX = 0;
+let speedY = 0;
+let posX = 0;
+let posY = 0;
+
+let dragging = false;
+let startX = 0;
 let startY = 0;
 
-if(ball){
+/* ================= MOUSE AIM ================= */
 
-ball.addEventListener("mousedown",(e)=>{
-drag=true;
-startY=e.clientY;
+sceneBox.addEventListener("mousedown",(e)=>{
+dragging = true;
+startX = e.clientX;
+startY = e.clientY;
 });
 
 document.addEventListener("mouseup",(e)=>{
-if(!drag) return;
-speed = (startY - e.clientY) * 0.12;
-drag=false;
+if(!dragging) return;
+
+speedX = (e.clientX - startX) * 0.05;
+speedY = (e.clientY - startY) * 0.05;
+
+dragging = false;
 });
+
+/* ================= BALL PHYSICS ================= */
 
 function loop(){
 
-pos += speed;
-speed -= 0.35;
+posX += speedX;
+posY += speedY;
 
-ball.style.bottom = pos + "px";
+/* gravity */
+speedY -= 0.3;
 
-if(pos > 160){
+/* friction */
+speedX *= 0.99;
 
-let vals=[0.5,1,2,3,4,5,6];
-let hit = vals[Math.floor(Math.random()*vals.length)];
+ball.style.left = (50 + posX) + "%";
+ball.style.bottom = (20 + posY) + "px";
 
-document.getElementById("result").innerText = hit + "%";
+/* HIT ZONE (sphere center simulation) */
+if(posY > 200){
 
-pos=0;
-speed=0;
+let zones = [0.5,1,2,3,4,5,6];
+let hit = zones[Math.floor(Math.random()*zones.length)];
+
+alert("🎯 HIT: " + hit + "%");
+
+posX = 0;
+posY = 0;
+speedX = 0;
+speedY = 0;
 }
 
 requestAnimationFrame(loop);
@@ -271,21 +260,22 @@ requestAnimationFrame(loop);
 
 loop();
 
+/* ================= UNLOCK NEWS ================= */
+
+function unlock(){
+document.getElementById("lock").style.display="none";
 }
 
-/* ================= GLOBE ================= */
-
-const globeBox = document.getElementById("globe");
-
-if(globeBox){
+/* ================= THREE (VISUAL SPHERE) ================= */
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 const renderer = new THREE.WebGLRenderer({alpha:true});
 
-renderer.setSize(360,200);
-globeBox.appendChild(renderer.domElement);
+renderer.setSize(420,260);
+sceneBox.appendChild(renderer.domElement);
 
+/* globe */
 const globe = new THREE.Points(
 new THREE.SphereGeometry(1.5,32,32),
 new THREE.PointsMaterial({color:0x00ffcc,size:0.02})
@@ -301,16 +291,6 @@ renderer.render(scene,camera);
 }
 
 animate();
-
-}
-
-/* ================= NEWS ================= */
-
-window.unlockNews = function(){
-document.getElementById("lock").style.display="none";
-};
-
-};
 
 </script>
 
