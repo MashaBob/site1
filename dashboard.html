@@ -3,30 +3,36 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Panel Pro Trader</title>
+
+<title>Panel Pro Trader FIX</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
 
+/* ✅ FIX MAIN BUG: allow scroll */
 body{
 margin:0;
 font-family:Arial;
 background:#050914;
 color:white;
-overflow:hidden;
+overflow-y:auto;   /* FIX */
+overflow-x:hidden;
 }
 
+/* layout FIX */
 .layout{
 display:grid;
 grid-template-columns:260px 1fr 380px;
-height:100vh;
+min-height:100vh;   /* FIX (was height 100vh) */
 }
 
+/* LEFT */
 .left{
 background:#0b1220;
 padding:15px;
+min-height:100vh;
 }
 
 .btn{
@@ -37,6 +43,7 @@ margin-bottom:8px;
 cursor:pointer;
 }
 
+/* CENTER */
 .center{
 padding:15px;
 display:flex;
@@ -44,6 +51,7 @@ flex-direction:column;
 gap:10px;
 }
 
+/* KPIs */
 .kpis{
 display:flex;
 gap:10px;
@@ -56,29 +64,33 @@ padding:10px;
 border-radius:12px;
 }
 
-.kpi.active{
-border:1px solid #00ffcc;
-}
-
+/* CHART */
 .card{
 background:#0d1628;
 padding:12px;
 border-radius:12px;
 }
 
+/* RIGHT FIX SCROLL */
 .right{
 padding:15px;
 display:flex;
 flex-direction:column;
 gap:10px;
+
+/* IMPORTANT */
+overflow-y:auto;
+max-height:100vh;
 }
 
+/* widgets */
 .widget{
 background:#0d1628;
 padding:12px;
 border-radius:12px;
 }
 
+/* GAME */
 .gameBox{
 background:#08101f;
 border-radius:12px;
@@ -98,6 +110,7 @@ bottom:20px;
 transform:translateX(-50%);
 }
 
+/* GLOBE */
 .globe{
 position:absolute;
 right:10px;
@@ -106,6 +119,7 @@ width:120px;
 height:120px;
 }
 
+/* NEWS */
 .news{
 background:#111b2e;
 padding:10px;
@@ -113,25 +127,7 @@ border-radius:10px;
 position:relative;
 }
 
-.lock{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,0.8);
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-}
-
-.lock button{
-margin-top:10px;
-background:#00ffcc;
-border:none;
-padding:6px;
-border-radius:8px;
-cursor:pointer;
-}
-
+/* WhatsApp FIX (was hidden below) */
 .whatsapp{
 background:#25D366;
 color:black;
@@ -140,6 +136,13 @@ border-radius:10px;
 text-align:center;
 cursor:pointer;
 font-weight:bold;
+margin-top:10px;
+}
+
+/* small text */
+.small{
+font-size:12px;
+opacity:0.8;
 }
 
 </style>
@@ -162,22 +165,9 @@ font-weight:bold;
 <div class="center">
 
 <div class="kpis">
-
-<div class="kpi">
-💰 Saldo<br>
-<b id="saldo">$10,000</b>
-</div>
-
-<div class="kpi">
-📈 Ganancia diaria<br>
-<b id="daily">$0</b>
-</div>
-
-<div class="kpi">
-⚡ ROI<br>
-<b>+4%</b>
-</div>
-
+<div class="kpi">💰 Saldo <br><b id="saldo">$10,000</b></div>
+<div class="kpi">📈 Ganancia diaria <br><b id="daily">$0</b></div>
+<div class="kpi">⚡ ROI <br><b>+4%</b></div>
 </div>
 
 <div class="card">
@@ -198,40 +188,36 @@ font-weight:bold;
 </div>
 
 <p>Rendimiento: <b id="rend">0%</b></p>
+
 </div>
 
-<!-- 🔥 NEW LEVEL SYSTEM -->
+<!-- FIX: instruction stays small -->
 <div class="widget">
-<h4>⭐ Nivel del inversor</h4>
-Nivel: <b id="nivel">2 / 30</b>
-<br><br>
-
-<button onclick="subscribe()" style="background:#00ffcc;border:none;padding:6px;border-radius:8px;cursor:pointer;">
-Suscribirse Noticias (17 MXN)
-</button>
+<div class="small">
+💡 Arrastra el balón y lánzalo hacia el globo.  
+Cada impacto genera rendimiento.
+</div>
 </div>
 
+<!-- STATS -->
 <div class="widget">
 <h4>📊 Stats</h4>
 Trades: <b id="trades">0</b>
 </div>
 
+<!-- NEWS (visible always now) -->
 <div class="widget">
 <h4>📰 Noticias</h4>
 
 <div class="news">
 <div>Bitcoin estable</div>
 <div>Ethereum en alza</div>
-
-<div class="lock" id="lock">
-🔒 Premium Noticias
-<button onclick="subscribe()">Activar</button>
+<div>Mercado mixto global</div>
 </div>
 
 </div>
 
-</div>
-
+<!-- WHATSAPP FIXED -->
 <div class="whatsapp" onclick="wa()">
 📞 Agendar llamada con asesor
 </div>
@@ -242,28 +228,13 @@ Trades: <b id="trades">0</b>
 
 <script>
 
-/* ================= GAME STATE ================= */
-
+/* STATE */
 let balance = 10000;
 let daily = 0;
 let trades = 0;
 let history = [10000];
 
-/* ================= LEVEL SYSTEM ================= */
-
-let nivel = 2;
-let puntos = 2;
-let suscrito = false;
-
-/* + level helper */
-function addLevel(p){
-puntos += p;
-nivel = Math.min(30, puntos);
-document.getElementById("nivel").innerText = nivel + " / 30";
-}
-
-/* ================= CHART ================= */
-
+/* CHART */
 const ctx = document.getElementById("chart");
 
 let chart = new Chart(ctx,{
@@ -279,9 +250,9 @@ tension:0.3
 options:{plugins:{legend:{display:false}}}
 });
 
-/* ================= GAME (NO CHANGED) ================= */
-
+/* GAME */
 let ball = document.getElementById("ball");
+
 let y = 0;
 let speed = 0;
 let dragging = false;
@@ -293,10 +264,10 @@ dragging = true;
 startY = e.clientY;
 };
 
-document.onmouseup = (e)=>{
+document.onmouseup = ()=>{
 if(!dragging) return;
 
-speed = (startY - e.clientY) * 0.12;
+speed = 0.12 * (startY - event.clientY);
 dragging = false;
 
 trades++;
@@ -323,17 +294,14 @@ let hit = [0.5,1,2,3,4,5,6][Math.floor(Math.random()*6)];
 daily += hit;
 balance += hit;
 
-document.getElementById("rend").innerText = hit + "%";
 document.getElementById("daily").innerText = "$" + daily.toFixed(2);
 document.getElementById("saldo").innerText = "$" + balance.toFixed(2);
+document.getElementById("rend").innerText = hit + "%";
 
 history.push(balance);
 chart.data.labels.push("D"+history.length);
 chart.data.datasets[0].data = [...history];
 chart.update();
-
-/* 🔥 LEVEL BOOST FROM GAME */
-addLevel(1);
 
 y = 0;
 speed = 0;
@@ -344,24 +312,12 @@ requestAnimationFrame(loop);
 
 loop();
 
-/* ================= SUBSCRIPTION ================= */
-
-function subscribe(){
-if(!suscrito){
-suscrito = true;
-document.getElementById("lock").style.display="none";
-addLevel(5);
-}
-}
-
-/* ================= WHATSAPP ================= */
-
+/* WHATSAPP */
 function wa(){
 window.open("https://wa.me/5210000000000","_blank");
 }
 
-/* ================= GLOBE ================= */
-
+/* GLOBE */
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 const renderer = new THREE.WebGLRenderer({alpha:true});
@@ -382,6 +338,7 @@ requestAnimationFrame(animate);
 globe.rotation.y += 0.01;
 renderer.render(scene,camera);
 }
+
 animate();
 
 </script>
