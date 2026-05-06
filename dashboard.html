@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Capital AI PRO V3 FIX</title>
+<title>Capital AI V4 FIX</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
@@ -40,6 +40,7 @@ padding:10px;
 margin-bottom:6px;
 background:#111b2e;
 border-radius:8px;
+cursor:pointer;
 }
 
 /* CENTER */
@@ -91,9 +92,9 @@ transform:translateX(-50%);
 /* NEWS */
 .news{
 position:relative;
-background:#101b33;
 padding:10px;
 border-radius:10px;
+background:#101b33;
 overflow:hidden;
 }
 
@@ -102,9 +103,9 @@ position:absolute;
 inset:0;
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
-background:rgba(0,0,0,0.7);
+justify-content:center;
+background:rgba(0,0,0,0.75);
 }
 
 .lock button{
@@ -121,11 +122,10 @@ cursor:pointer;
 height:220px;
 }
 
-/* COLORS */
 .green{color:#00ffcc}
 
-canvas{
-max-width:100%;
+button{
+cursor:pointer;
 }
 
 </style>
@@ -149,7 +149,7 @@ max-width:100%;
 
 <div class="card">
 <h2>Hola Trader 👋</h2>
-Saldo: <b id="balance">$10,000</b><br>
+Saldo: <b>$10,000</b><br>
 ROI: <span class="green">+6% mensual</span>
 </div>
 
@@ -167,17 +167,17 @@ ROI: <span class="green">+6% mensual</span>
 <div class="widget">
 <h4>🎮 Skill Game</h4>
 
-<div class="game" id="game">
+<div class="game" id="gameBox">
 <div class="ball" id="ball"></div>
 </div>
 
-<div>Rendimiento: <b id="result">0%</b></div>
+<p>Rendimiento: <b id="result">0%</b></p>
 </div>
 
 <!-- WALLET -->
 <div class="widget">
 <h4>Wallet</h4>
-<b class="green" id="wallet">$1,234.56</b>
+<b>$1,234.56</b>
 </div>
 
 <!-- GLOBE -->
@@ -192,14 +192,14 @@ ROI: <span class="green">+6% mensual</span>
 
 <div class="news">
 
-<div>Bitcoin estable en el mercado</div>
+<div>Bitcoin estable</div>
 <div>Ethereum en crecimiento</div>
-<div>Mercados globales mixtos</div>
+<div>Mercados mixtos</div>
 
 <div class="lock" id="lock">
 🔒 Premium bloqueado<br>
 17 MXN / mes
-<button onclick="unlock()">Desbloquear</button>
+<button onclick="unlockNews()">Desbloquear</button>
 </div>
 
 </div>
@@ -212,6 +212,9 @@ ROI: <span class="green">+6% mensual</span>
 
 <script>
 
+/* ================= INIT SAFE ================= */
+window.onload = function(){
+
 /* ================= CHART ================= */
 const ctx = document.getElementById("chart");
 
@@ -220,17 +223,14 @@ type:"line",
 data:{
 labels:["Mon","Tue","Wed","Thu","Fri"],
 datasets:[{
-data:[10000,10200,10100,10800,11200],
+data:[10000,10200,10150,10800,11200],
 borderColor:"#00ffcc",
 tension:0.3
 }]
 },
 options:{
 plugins:{legend:{display:false}},
-scales:{
-x:{display:false},
-y:{display:false}
-}
+scales:{x:{display:false},y:{display:false}}
 }
 });
 
@@ -239,19 +239,19 @@ y:{display:false}
 let ball = document.getElementById("ball");
 let pos = 0;
 let speed = 0;
-let drag = false;
+let dragging = false;
 let startY = 0;
 
 ball.addEventListener("mousedown",(e)=>{
-drag = true;
+dragging = true;
 startY = e.clientY;
 });
 
 document.addEventListener("mouseup",(e)=>{
-if(!drag) return;
+if(!dragging) return;
 
 speed = (startY - e.clientY) * 0.12;
-drag = false;
+dragging = false;
 });
 
 function gameLoop(){
@@ -266,7 +266,7 @@ if(pos > 160){
 let values = [0.5,1,2,3,4,5,6];
 let hit = values[Math.floor(Math.random()*values.length)];
 
-document.getElementById("result").innerText = "🎯 " + hit + "%";
+document.getElementById("result").innerText = hit + "%";
 
 pos = 0;
 speed = 0;
@@ -302,9 +302,11 @@ renderer.render(scene,camera);
 
 animate();
 
+}
+
 /* ================= NEWS ================= */
 
-function unlock(){
+function unlockNews(){
 document.getElementById("lock").style.display = "none";
 }
 
