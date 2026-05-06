@@ -1,61 +1,32 @@
-<!-- ===================================================== -->
-<!-- HTML5 ДОКУМЕНТ -->
-<!-- ===================================================== -->
-
 <!DOCTYPE html>
-
-<!-- ===================================================== -->
-<!-- ОСНОВНОЙ HTML -->
-<!-- lang="es" = язык сайта испанский -->
-<!-- ===================================================== -->
+<!-- Тип документа HTML5 -->
 
 <html lang="es">
 
 <head>
 
-<!-- ===================================================== -->
-<!-- UTF-8 = кодировка текста -->
-<!-- чтобы русский/испанский отображались нормально -->
-<!-- ===================================================== -->
-
 <meta charset="UTF-8">
 
-<!-- ===================================================== -->
-<!-- НАЗВАНИЕ ВКЛАДКИ -->
-<!-- ===================================================== -->
-
 <title>Capital Inteligente</title>
-
-<!-- ===================================================== -->
-<!-- CSS -->
-<!-- CSS отвечает за ВНЕШНИЙ ВИД сайта -->
-<!-- ===================================================== -->
 
 <style>
 
 /* ===================================================== */
-/* BODY = ВСЯ СТРАНИЦА */
+/* BODY = всё тело сайта */
 /* ===================================================== */
 
 body{
+    margin:0; /* убирает белые отступы браузера */
 
-    margin:0;
-    /* убираем белые отступы браузера */
+    background:#0b1220; /* цвет фона */
 
-    background:#0b1220;
-    /* фон сайта */
+    font-family:Arial; /* шрифт */
 
-    font-family:Arial;
-    /* шрифт */
+    color:white; /* цвет текста */
 
-    color:white;
-    /* цвет текста */
-
-    overflow-x:hidden;
-    /* запрещаем горизонтальный скролл */
+    overflow-x:hidden; /* запрещает горизонтальный скролл */
 
     position:relative;
-
 }
 
 /* ===================================================== */
@@ -78,26 +49,21 @@ body::before{
     background-size:40px 40px;
 
     z-index:-1;
-
 }
 
 /* ===================================================== */
-/* ГЛАВНЫЙ КОНТЕЙНЕР */
-/* container = главная коробка сайта */
+/* ГЛАВНЫЙ FLEX КОНТЕЙНЕР */
 /* ===================================================== */
 
 .container{
 
-    display:flex;
-    /* flex = элементы становятся в ряд */
+    display:flex; /* ставит блоки в линию */
 
-    justify-content:space-between;
-    /* раздвигает блоки */
+    justify-content:space-between; /* раздвигает их */
 
-    align-items:flex-start;
+    align-items:center;
 
     padding:60px;
-
 }
 
 /* ===================================================== */
@@ -106,28 +72,19 @@ body::before{
 
 .left{
 
-    width:35%;
-
-    margin-top:40px;
-
+    width:38%;
 }
 
-/* ===================================================== */
-/* МАЛЕНЬКИЙ ТЕКСТ */
-/* ===================================================== */
+/* маленький верхний текст */
 
 .small{
 
-    font-size:15px;
+    font-size:14px;
 
     opacity:0.7;
-    /* прозрачность */
-
 }
 
-/* ===================================================== */
-/* ЗЕЛЕНЫЙ ТЕКСТ */
-/* ===================================================== */
+/* зелёный текст */
 
 .green{
 
@@ -135,48 +92,39 @@ body::before{
 
     font-size:22px;
 
-    margin-top:8px;
+    margin-top:5px;
 
+    font-weight:bold;
 }
 
-/* ===================================================== */
-/* ГЛАВНЫЙ ЗАГОЛОВОК */
-/* ===================================================== */
+/* большой заголовок */
 
 h1{
 
-    font-size:86px;
+    font-size:92px;
 
-    line-height:0.95;
+    line-height:0.9;
 
-    margin:25px 0;
+    margin:20px 0;
 
     text-shadow:
-    0 0 25px rgba(255,255,255,0.15);
-
+    0 0 30px rgba(255,255,255,0.2);
 }
 
-/* ===================================================== */
-/* ОПИСАНИЕ */
-/* ===================================================== */
+/* описание */
 
 .desc{
 
-    opacity:0.75;
+    opacity:0.7;
 
     margin-bottom:25px;
 
-    font-size:15px;
+    font-size:16px;
 
     line-height:1.6;
-
-    color:#94a3b8;
-
 }
 
-/* ===================================================== */
-/* КНОПКА */
-/* ===================================================== */
+/* кнопка */
 
 button{
 
@@ -184,61 +132,50 @@ button{
 
     border:none;
 
-    padding:16px 34px;
+    padding:16px 36px;
 
     border-radius:14px;
 
-    font-size:16px;
+    font-size:17px;
 
     cursor:pointer;
 
     transition:0.3s;
-    /* плавная анимация */
 
     box-shadow:
-    0 0 20px rgba(0,255,200,0.25);
-
+    0 0 25px rgba(0,255,200,0.25);
 }
 
-/* ===================================================== */
-/* HOVER КНОПКИ */
-/* hover = когда навели мышку */
-/* ===================================================== */
+/* анимация кнопки */
 
 button:hover{
 
     transform:translateY(-3px);
 
     box-shadow:
-    0 0 35px rgba(0,255,200,0.4);
-
+    0 0 40px rgba(0,255,200,0.45);
 }
 
 /* ===================================================== */
-/* LIVE ЦЕНЫ */
+/* БЛОК ЦЕН */
 /* ===================================================== */
 
 .prices{
 
     display:flex;
 
-    gap:12px;
+    gap:10px;
 
-    margin-top:30px;
-
+    margin-top:25px;
 }
-
-/* ===================================================== */
-/* КАРТОЧКИ ЦЕН */
-/* ===================================================== */
 
 .prices span{
 
     background:#1a2335;
 
-    padding:12px 18px;
+    padding:10px 15px;
 
-    border-radius:14px;
+    border-radius:12px;
 
     font-size:14px;
 
@@ -246,11 +183,10 @@ button:hover{
 
     box-shadow:
     0 0 20px rgba(0,255,200,0.04);
-
 }
 
 /* ===================================================== */
-/* БЛОК КАРТОЧЕК */
+/* КАРТОЧКИ */
 /* ===================================================== */
 
 .stats-advanced{
@@ -262,12 +198,9 @@ button:hover{
     margin-top:40px;
 
     flex-wrap:wrap;
-
 }
 
-/* ===================================================== */
-/* КАРТОЧКА */
-/* ===================================================== */
+/* сама карточка */
 
 .card{
 
@@ -281,7 +214,7 @@ button:hover{
 
     border-radius:18px;
 
-    padding:22px 26px;
+    padding:20px 24px;
 
     min-width:180px;
 
@@ -291,12 +224,9 @@ button:hover{
 
     box-shadow:
     0 0 25px rgba(0,255,200,0.05);
-
 }
 
-/* ===================================================== */
-/* КРУГ В КАРТОЧКЕ */
-/* ===================================================== */
+/* круг внутри карточки */
 
 .card::before{
 
@@ -313,12 +243,9 @@ button:hover{
 
     top:-40px;
     right:-40px;
-
 }
 
-/* ===================================================== */
-/* HOVER КАРТОЧКИ */
-/* ===================================================== */
+/* hover */
 
 .card:hover{
 
@@ -326,35 +253,42 @@ button:hover{
 
     box-shadow:
     0 0 30px rgba(0,255,200,0.2);
-
 }
 
-/* ===================================================== */
-/* ТЕКСТ В КАРТОЧКАХ */
-/* ===================================================== */
+/* маленький текст карточки */
 
 .label{
 
     font-size:13px;
 
     color:#9ca3af;
-
 }
+
+/* цифры */
 
 .value{
 
-    font-size:26px;
+    font-size:24px;
 
     font-weight:bold;
 
     color:white;
-
 }
+
+/* зелёные цифры */
 
 .value.green{
 
     color:#00ffc8;
+}
 
+/* описание карточки */
+
+.card .desc{
+
+    font-size:12px;
+
+    color:#6b7280;
 }
 
 /* ===================================================== */
@@ -363,24 +297,17 @@ button:hover{
 
 .right{
 
-    width:900px;
+    width:58%;
 
     display:flex;
 
-    flex-direction:column;
+    justify-content:center;
 
     align-items:center;
-
-    justify-content:flex-start;
-
-    margin-left:20px;
-
-    margin-top:-40px;
-
 }
 
 /* ===================================================== */
-/* ОБЕРТКА ШАРА */
+/* ОБЁРТКА ШАРА */
 /* ===================================================== */
 
 .sphere-wrap{
@@ -394,39 +321,6 @@ button:hover{
 
     justify-content:center;
     align-items:center;
-
-}
-
-/* ===================================================== */
-/* ГЛОБУС */
-/* ===================================================== */
-
-.globe-container{
-
-    position:relative;
-
-    width:700px;
-    height:700px;
-
-    z-index:2;
-
-}
-
-/* ===================================================== */
-/* CANVAS */
-/* canvas = холст для рисования шара */
-/* ===================================================== */
-
-.globe-container canvas{
-
-    position:absolute;
-
-    top:0;
-    left:0;
-
-    width:700px;
-    height:700px;
-
 }
 
 /* ===================================================== */
@@ -437,8 +331,8 @@ button:hover{
 
     position:absolute;
 
-    width:480px;
-    height:480px;
+    width:520px;
+    height:520px;
 
     background:radial-gradient(
         circle,
@@ -446,34 +340,62 @@ button:hover{
         transparent
     );
 
-    top:120px;
-    left:120px;
+    border-radius:50%;
 
-    filter:blur(30px);
+    filter:blur(40px);
 
     z-index:1;
-
 }
 
 /* ===================================================== */
-/* ОРБИТЫ */
+/* ШАР */
 /* ===================================================== */
 
-.orbit{
+.globe-container{
+
+    position:relative;
+
+    width:700px;
+    height:700px;
+
+    z-index:2;
+}
+
+/* canvas */
+
+.globe-container canvas{
 
     position:absolute;
 
-    border:1px solid rgba(0,255,200,0.08);
+    top:0;
+    left:0;
 
-    border-radius:50%;
+    width:700px;
+    height:700px;
+}
 
-    z-index:1;
+/* ===================================================== */
+/* ЛИНИИ */
+/* ===================================================== */
 
+.line{
+
+    position:absolute;
+
+    height:2px;
+
+    background:rgba(0,255,200,0.25);
+
+    transform-origin:left center;
+
+    z-index:2;
+
+    box-shadow:
+    0 0 15px rgba(0,255,200,0.3);
 }
 
 /* ===================================================== */
 /* СТРАНЫ */
-/* страны вынесены ЗА шар */
 /* ===================================================== */
 
 .city{
@@ -486,50 +408,22 @@ button:hover{
 
     font-size:13px;
 
-    padding:8px 14px;
+    padding:7px 14px;
 
     border-radius:14px;
 
     background:rgba(0,255,200,0.08);
 
-    border:1px solid rgba(0,255,200,0.25);
+    border:1px solid rgba(0,255,200,0.35);
 
     white-space:nowrap;
 
-    z-index:4;
+    z-index:5;
+
+    backdrop-filter:blur(8px);
 
     box-shadow:
-    0 0 20px rgba(0,255,200,0.12);
-
-    backdrop-filter:blur(10px);
-
-}
-
-/* ===================================================== */
-/* ЛИНИИ GLOBAL NETWORK */
-/* ===================================================== */
-
-.connection{
-
-    position:absolute;
-
-    height:2px;
-
-    background:
-    linear-gradient(
-        90deg,
-        transparent,
-        rgba(0,255,200,0.8),
-        transparent
-    );
-
-    z-index:2;
-
-    opacity:0.7;
-
-    box-shadow:
-    0 0 12px rgba(0,255,200,0.4);
-
+    0 0 18px rgba(0,255,200,0.15);
 }
 
 /* ===================================================== */
@@ -538,10 +432,9 @@ button:hover{
 
 .chart{
 
-    width:700px;
+    width:620px;
 
-    margin-top:-80px;
-
+    margin-top:-40px;
 }
 
 </style>
@@ -549,10 +442,6 @@ button:hover{
 </head>
 
 <body>
-
-<!-- ===================================================== -->
-<!-- ГЛАВНЫЙ КОНТЕЙНЕР -->
-<!-- ===================================================== -->
 
 <div class="container">
 
@@ -579,9 +468,7 @@ Inteligente
 Optimiza tus inversiones con datos reales del mercado en tiempo real.
 </div>
 
-<!-- ===================================================== -->
-<!-- КНОПКА ПЕРЕХОДА -->
-<!-- ===================================================== -->
+<!-- кнопка перехода -->
 
 <button onclick="window.location.href='register.html'">
 
@@ -590,7 +477,7 @@ Comenzar ahora
 </button>
 
 <!-- ===================================================== -->
-<!-- LIVE ЦЕНЫ -->
+<!-- ЦЕНЫ -->
 <!-- ===================================================== -->
 
 <div class="prices">
@@ -668,48 +555,22 @@ Relación promedio
 <div class="right">
 
 <!-- ===================================================== -->
-<!-- ОБЕРТКА ШАРА -->
+<!-- ШАР -->
 <!-- ===================================================== -->
 
 <div class="sphere-wrap">
 
 <div class="glow"></div>
 
-<!-- ===================================================== -->
-<!-- GLOBAL NETWORK ЛИНИИ -->
-<!-- ===================================================== -->
+<!-- линии -->
 
-<div class="connection"
-style="width:240px; top:220px; left:260px; transform:rotate(20deg);">
-</div>
+<div class="line" style="width:180px; top:180px; left:310px; transform:rotate(-35deg);"></div>
 
-<div class="connection"
-style="width:300px; top:350px; left:250px; transform:rotate(-12deg);">
-</div>
+<div class="line" style="width:140px; top:310px; left:330px; transform:rotate(12deg);"></div>
 
-<div class="connection"
-style="width:220px; top:480px; left:320px; transform:rotate(28deg);">
-</div>
+<div class="line" style="width:170px; top:380px; left:300px; transform:rotate(42deg);"></div>
 
-<!-- ===================================================== -->
-<!-- ОРБИТЫ -->
-<!-- ===================================================== -->
-
-<div class="orbit"
-style="width:420px;height:420px;top:140px;left:140px;">
-</div>
-
-<div class="orbit"
-style="width:520px;height:520px;top:90px;left:90px;">
-</div>
-
-<div class="orbit"
-style="width:620px;height:620px;top:40px;left:40px;">
-</div>
-
-<!-- ===================================================== -->
-<!-- ГЛОБУС -->
-<!-- ===================================================== -->
+<!-- шар -->
 
 <div class="globe-container">
 
@@ -719,55 +580,45 @@ width="700"
 height="700">
 </canvas>
 
-<!-- ===================================================== -->
-<!-- СТРАНЫ -->
-<!-- ===================================================== -->
+<!-- страны -->
 
-<div class="city" style="top:14%; left:30%">
+<div class="city" style="top:18%; left:36%">
 🇺🇸 USA
 </div>
 
-<div class="city" style="top:24%; left:22%">
+<div class="city" style="top:28%; left:24%">
 🇨🇦 Canada
 </div>
 
-<div class="city" style="top:42%; left:15%">
+<div class="city" style="top:44%; left:18%">
 🇲🇽 Mexico
 </div>
 
-<div class="city" style="top:28%; left:52%">
+<div class="city" style="top:32%; left:62%">
 🇬🇧 UK
 </div>
 
-<div class="city" style="top:38%; left:62%">
+<div class="city" style="top:42%; left:72%">
 🇫🇷 France
 </div>
 
-<div class="city" style="top:46%; left:72%">
+<div class="city" style="top:52%; left:76%">
 🇩🇪 Germany
 </div>
 
-<div class="city" style="top:52%; left:82%">
-🇦🇪 Dubai
-</div>
-
-<div class="city" style="top:34%; left:92%">
-🇯🇵 Japan
-</div>
-
-<div class="city" style="top:48%; left:98%">
-🇭🇰 Hong Kong
-</div>
-
-<div class="city" style="top:64%; left:90%">
-🇸🇬 Singapore
-</div>
-
-<div class="city" style="top:78%; left:76%">
+<div class="city" style="top:68%; left:68%">
 🇦🇺 Australia
 </div>
 
-<div class="city" style="top:68%; left:38%">
+<div class="city" style="top:58%; left:90%">
+🇭🇰 Hong Kong
+</div>
+
+<div class="city" style="top:42%; left:95%">
+🇯🇵 Japan
+</div>
+
+<div class="city" style="top:74%; left:52%">
 🇧🇷 Brazil
 </div>
 
@@ -775,26 +626,9 @@ height="700">
 
 </div>
 
-<!-- ===================================================== -->
-<!-- ГРАФИК -->
-<!-- ===================================================== -->
-
-<div class="chart">
-
-<script src="https://s3.tradingview.com/tv.js"></script>
-
-<div id="chart"></div>
-
 </div>
 
 </div>
-
-</div>
-
-<!-- ===================================================== -->
-<!-- JAVASCRIPT -->
-<!-- JavaScript = логика сайта -->
-<!-- ===================================================== -->
 
 <script>
 
@@ -802,36 +636,208 @@ height="700">
 /* CANVAS */
 /* ===================================================== */
 
-const canvas =
-document.getElementById("sphere");
+const canvas = document.getElementById("sphere");
 
-/* ===================================================== */
-/* ctx = инструмент рисования */
-/* ===================================================== */
+const ctx = canvas.getContext("2d");
 
-const ctx =
-canvas.getContext("2d");
-
-/* ===================================================== */
-/* ПЕРЕМЕННЫЕ МЫШКИ */
-/* ===================================================== */
+/* положение мышки */
 
 let mouseX = 0;
 let mouseY = 0;
 
-/* ===================================================== */
-/* УГЛЫ ПОВОРОТА */
-/* ===================================================== */
+/* углы вращения */
 
 let angleX = 0;
 let angleY = 0;
 
-/* ===================================================== */
-/* АВТОВРАЩЕНИЕ */
-/* ===================================================== */
+/* авто вращение */
 
 let auto = 0;
+
+/* движение мышки */
+
+canvas.addEventListener("mousemove", e => {
+
+let rect = canvas.getBoundingClientRect();
+
+mouseX = (e.clientX - rect.left - 350) / 350;
+
+mouseY = (e.clientY - rect.top - 350) / 350;
+
+});
+
+/* массив точек шара */
+
+const pts = [];
+
+/* создаём точки */
+
+for(let i = 0; i < 1500; i++){
+
+let t = Math.random() * Math.PI * 2;
+
+let p = Math.acos(Math.random() * 2 - 1);
+
+let r = 250;
+
+pts.push({
+
+x:r*Math.sin(p)*Math.cos(t),
+
+y:r*Math.sin(p)*Math.sin(t),
+
+z:r*Math.cos(p)
+
+});
+
+}
+
+/* функция рисования */
+
+function draw(){
+
+ctx.clearRect(0,0,700,700);
+
+auto += 0.002;
+
+angleX += (mouseY - angleX) * 0.05;
+
+angleY += (mouseX + auto - angleY) * 0.05;
+
+pts.forEach(p => {
+
+let x = p.x;
+
+let y = p.y*Math.cos(angleX)-p.z*Math.sin(angleX);
+
+let z = p.y*Math.sin(angleX)+p.z*Math.cos(angleX);
+
+let x2 = x*Math.cos(angleY)-z*Math.sin(angleY);
+
+let z2 = x*Math.sin(angleY)+z*Math.cos(angleY);
+
+let scale = 600/(600+z2);
+
+let px = 350 + x2*scale;
+
+let py = 350 + y*scale;
+
+ctx.beginPath();
+
+ctx.arc(px,py,2*scale,0,Math.PI*2);
+
+ctx.fillStyle = "#00ffcc";
+
+ctx.fill();
+
+});
+
+requestAnimationFrame(draw);
+
+}
+
+/* запускаем */
+
+draw();
+
+/* ===================================================== */
+/* ЗАГРУЗКА ЦЕН */
+/* ===================================================== */
+
+async function loadPrices(){
+
+try{
+
+const res = await fetch(
+"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,mxn"
+);
+
+const data = await res.json();
+
+document.getElementById("btc").innerHTML =
+"BTC: $" + data.bitcoin.usd.toLocaleString();
+
+document.getElementById("eth").innerHTML =
+"ETH: $" + data.ethereum.usd.toLocaleString();
+
+document.getElementById("mxn").innerHTML =
+"MXN: " + data.bitcoin.mxn.toLocaleString();
+
+}catch(e){
+
+console.log(e);
+
+}
+
+}
+
+/* запускаем цены */
+
+loadPrices();
+
+/* обновляем каждые 10 секунд */
+
+setInterval(loadPrices,10000);
+
+/* ===================================================== */
+/* АНИМАЦИЯ ЦИФР */
+/* ===================================================== */
+
+function animateValue(id,start,end,duration){
+
+let obj = document.getElementById(id);
+
+let startTime = null;
+
+function step(timestamp){
+
+if(!startTime){
+
+startTime = timestamp;
+
+}
+
+let progress = Math.min(
+(timestamp - startTime) / duration,
+1
+);
+
+if(id === "profit"){
+
+obj.innerHTML =
+"+" + Math.floor(
+progress * (end - start) + start
+);
+
+}else{
+
+obj.innerHTML =
+Math.floor(
+progress * (end - start) + start
+) + "%";
+
+}
+
+if(progress < 1){
+
+requestAnimationFrame(step);
+
+}
+
+}
+
+requestAnimationFrame(step);
+
+}
+
+/* запускаем */
+
+animateValue("profit",0,9434,2000);
+
+animateValue("win",0,83,2000);
 
 </script>
 
 </body>
+
+</html>
