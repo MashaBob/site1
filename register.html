@@ -9,176 +9,198 @@
 
 <style>
 
-/* ===================== BODY ===================== */
+/* =========================
+   GLOBAL BACKGROUND
+========================= */
+
 body{
     margin:0;
     padding:0;
-    background:#0b1220;
     font-family:Arial;
+    background:#0b1220;
     color:white;
+    overflow:hidden;
+    position:relative;
 }
 
-/* ===================== LAYOUT ===================== */
+/* GRID */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size:40px 40px;
+    z-index:-2;
+}
+
+/* GLOW */
+body::after{
+    content:"";
+    position:fixed;
+    width:900px;
+    height:900px;
+    background:radial-gradient(circle, rgba(0,255,200,0.18), transparent 60%);
+    top:-200px;
+    right:-250px;
+    filter:blur(70px);
+    z-index:-1;
+    animation:move 6s ease-in-out infinite alternate;
+}
+
+@keyframes move{
+    from{transform:translateY(0);}
+    to{transform:translateY(40px);}
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
 .container{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    min-height:100vh;
-    padding:60px;
+    height:100vh;
+    padding:0 80px;
 }
 
-/* ===================== LEFT ===================== */
+/* =========================
+   LEFT
+========================= */
+
 .left{
-    width:45%;
+    width:50%;
 }
 
-/* ===================== CALCULATOR ===================== */
+/* CALCULATOR */
 .calculator{
-    margin-top:20px;
-    padding:25px;
-    background:rgba(255,255,255,0.04);
-    border:1px solid rgba(0,255,200,0.2);
-    border-radius:20px;
-    backdrop-filter:blur(10px);
-    max-width:400px;
+    padding:20px;
 }
 
 .calculator h2{
-    margin-bottom:15px;
-    color:#00ffcc;
+    font-size:28px;
+    margin-bottom:10px;
 }
 
-.calculator input{
+input{
     width:100%;
-    margin-bottom:10px;
     padding:12px;
+    margin:8px 0;
     border-radius:10px;
     border:none;
     outline:none;
-    background:#0f172a;
-    color:white;
 }
 
-.calculator button{
+button{
     width:100%;
     padding:12px;
     background:#00ffcc;
     border:none;
     border-radius:10px;
     cursor:pointer;
-    font-weight:bold;
+    margin-top:10px;
 }
 
-#result{
+.result{
     margin-top:10px;
-    font-weight:bold;
     color:#00ffcc;
 }
 
-/* ===================== RIGHT ===================== */
+/* =========================
+   RIGHT REGISTER
+========================= */
+
 .right{
-    width:40%;
+    width:400px;
 }
 
-/* ===================== REGISTER BOX ===================== */
-.register-box{
-    background:rgba(255,255,255,0.04);
-    border:1px solid rgba(0,255,200,0.2);
-    border-radius:30px;
+.box{
+    background:rgba(255,255,255,0.05);
     padding:40px;
+    border-radius:25px;
+    backdrop-filter:blur(20px);
 }
 
-/* inputs */
-input{
-    width:100%;
-    padding:15px;
-    margin-top:10px;
-    border-radius:12px;
-    border:none;
-    background:#0f172a;
-    color:white;
+/* =========================
+   GLOBE (SBOKU)
+========================= */
+
+.globe{
+    position:fixed;
+    width:700px;
+    height:700px;
+    right:-250px;
+    bottom:-200px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(0,255,200,0.12), transparent 60%);
+    filter:blur(10px);
+    z-index:-1;
+    animation:spin 12s linear infinite;
 }
 
-/* register button */
-.register-btn{
-    width:100%;
-    padding:15px;
-    margin-top:15px;
-    background:#00ffcc;
-    border:none;
-    border-radius:12px;
-    font-weight:bold;
-    cursor:pointer;
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
 }
-
-/* social buttons */
-.social-btn{
-    width:100%;
-    margin-top:10px;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.google{background:white;color:black;}
-.facebook{background:#1877f2;color:white;}
 
 </style>
-
 </head>
 
 <body>
 
+<!-- GLOBE -->
+<div class="globe"></div>
+
 <div class="container">
 
-<!-- ================= LEFT ================= -->
+<!-- LEFT -->
 <div class="left">
 
-<h1>Capital Inteligente</h1>
+    <div class="calculator">
+        <h2>Calcula tu capital inteligente</h2>
 
-<div class="calculator">
+        <input id="amount" type="number" placeholder="Capital inicial">
+        <input id="percent" type="number" placeholder="Rentabilidad %">
+        <input id="days" type="number" placeholder="Días">
 
-<h2>Calcula tu capital inteligente</h2>
+        <button onclick="calc()">Calcular</button>
 
-<input id="amount" type="number" placeholder="Capital inicial ($)">
-<input id="percent" type="number" placeholder="Rentabilidad (%)">
-<input id="days" type="number" placeholder="Días">
-
-<button onclick="calc()">Calcular</button>
-
-<div id="result">Resultado: $0</div>
+        <div class="result" id="result">Resultado: $0</div>
+    </div>
 
 </div>
 
-</div>
-
-<!-- ================= RIGHT ================= -->
+<!-- RIGHT -->
 <div class="right">
 
-<div class="register-box">
+<div class="box">
 
 <h2>Crear cuenta</h2>
 
 <input type="email" placeholder="Email">
-<input type="password" placeholder="Password">
+<input type="password" placeholder="Contraseña">
+<input type="password" placeholder="Confirmar">
 
-<button class="register-btn">Crear cuenta</button>
+<button onclick="register()">Crear cuenta</button>
 
-<!-- SOCIAL LOGIN -->
-<button class="social-btn google" onclick="googleLogin()">Google</button>
-<button class="social-btn facebook" onclick="loginWithFacebook()">Facebook</button>
+<br><br>
+
+<button onclick="googleLogin()">Google</button>
+<button onclick="loginWithFacebook()">Facebook</button>
+
+</div>
 
 </div>
 
 </div>
 
-</div>
+<!-- =========================
+   JS CALCULATOR
+========================= -->
 
-<!-- ================= CALCULATOR JS ================= -->
 <script>
-
 function calc(){
 
     let amount = parseFloat(document.getElementById("amount").value);
@@ -194,26 +216,22 @@ function calc(){
     let result = amount * Math.pow((1 + percent/100), days);
 
     document.getElementById("result").innerHTML =
-    "Resultado: $ " + result.toFixed(2);
-
+    "Resultado: $" + result.toFixed(2);
 }
-
 </script>
 
-<!-- ================= FIREBASE (GOOGLE + FACEBOOK) ================= -->
+<!-- =========================
+   FIREBASE
+========================= -->
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signInWithPopup
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* ===== YOUR FIREBASE CONFIG ===== */
+/* CONFIG */
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
+  apiKey: "AIzaSyC40P7qavWWL5VMplPulXzzbOptXrjdV-I",
   authDomain: "capital-inteligente-14b57.firebaseapp.com",
   projectId: "capital-inteligente-14b57",
   storageBucket: "capital-inteligente-14b57.appspot.com",
@@ -221,38 +239,37 @@ const firebaseConfig = {
   appId: "1:636226243947:web:fdca179b00f37135e7902e"
 };
 
-/* INIT ONCE */
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* PROVIDERS */
-const googleProvider = new GoogleAuthProvider();
-const facebookProvider = new FacebookAuthProvider();
-
-/* ================= GOOGLE LOGIN ================= */
+/* GOOGLE */
 window.googleLogin = async function(){
 
-    try {
-        const result = await signInWithPopup(auth, googleProvider);
-        window.location.href = "dashboard.html";
-    } catch (e) {
-        console.log(e);
-        alert("Google login error");
-    }
+    const provider = new GoogleAuthProvider();
 
+    try{
+        const result = await signInWithPopup(auth, provider);
+        alert("Bienvenida " + result.user.displayName);
+        window.location.href = "dashboard.html";
+    }catch(e){
+        alert("Error Google Login");
+        console.log(e);
+    }
 }
 
-/* ================= FACEBOOK LOGIN ================= */
+/* FACEBOOK */
 window.loginWithFacebook = async function(){
 
-    try {
-        const result = await signInWithPopup(auth, facebookProvider);
-        window.location.href = "dashboard.html";
-    } catch (e) {
-        console.log(e);
-        alert("Facebook login error: " + e.message);
-    }
+    const provider = new FacebookAuthProvider();
 
+    try{
+        const result = await signInWithPopup(auth, provider);
+        alert("Facebook login OK");
+        window.location.href = "dashboard.html";
+    }catch(e){
+        alert("Error Facebook Login");
+        console.log(e);
+    }
 }
 
 </script>
