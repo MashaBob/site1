@@ -4,21 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Panel Pro Trader</title>
+<title>Capital AI PRO v2</title>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
 body{
 margin:0;
-font-family:Arial;
 background:#050914;
 color:#e6edf7;
+font-family:Arial;
+overflow:hidden;
 }
 
-.layout{
+.grid{
 display:grid;
-grid-template-columns:220px 1fr 380px;
+grid-template-columns:220px 1fr 360px;
 height:100vh;
 }
 
@@ -27,10 +28,10 @@ background:#0b1220;
 padding:15px;
 }
 
-.menu{
+.item{
 padding:10px;
+margin-bottom:6px;
 background:#111b2e;
-margin-bottom:8px;
 border-radius:8px;
 cursor:pointer;
 }
@@ -62,7 +63,7 @@ border-radius:12px;
 }
 
 /* GAME */
-.gameBox{
+.game{
 height:200px;
 background:#08101f;
 border-radius:12px;
@@ -73,8 +74,8 @@ overflow:hidden;
 .ball{
 width:18px;
 height:18px;
-background:#00ffcc;
 border-radius:50%;
+background:#00ffcc;
 position:absolute;
 bottom:10px;
 left:50%;
@@ -88,16 +89,16 @@ inset:0;
 background:rgba(0,0,0,0.7);
 display:flex;
 flex-direction:column;
-align-items:center;
 justify-content:center;
+align-items:center;
 }
 
 .lock button{
 margin-top:10px;
-padding:8px;
-background:#00ffcc;
+padding:6px;
 border:none;
 border-radius:8px;
+background:#00ffcc;
 cursor:pointer;
 }
 
@@ -110,18 +111,18 @@ height:220px;
 
 <body>
 
-<div class="layout">
+<div class="grid">
 
-<!-- LEFT -->
+<!-- SIDEBAR -->
 <div class="sidebar">
 <h3>PANEL PRO</h3>
-<div class="menu">Dashboard</div>
-<div class="menu">Wallet</div>
-<div class="menu">Markets</div>
-<div class="menu">Settings</div>
+<div class="item">Dashboard</div>
+<div class="item">Wallet</div>
+<div class="item">Markets</div>
+<div class="item">Settings</div>
 </div>
 
-<!-- CENTER -->
+<!-- MAIN -->
 <div class="main">
 
 <div class="card">
@@ -146,7 +147,7 @@ Profit: <span id="profit">$0</span>
 <div class="widget">
 <h4>🎯 Skill Game</h4>
 
-<div class="gameBox" id="game">
+<div class="game" id="game">
 <div class="ball" id="ball"></div>
 </div>
 
@@ -170,12 +171,11 @@ Profit: <span id="profit">$0</span>
 <h4>📰 Noticias</h4>
 
 <div>Bitcoin estable</div>
-<div>Ethereum en crecimiento</div>
+<div>Ethereum crecimiento</div>
 
 <div class="lock" id="lock">
-🔒 Premium bloqueado<br>
-<small>17 MXN / mes</small>
-<button onclick="unlock()">Desbloquear</button>
+🔒 Premium 17 MXN / mes
+<button onclick="unlockNews()">Unlock</button>
 </div>
 
 </div>
@@ -186,95 +186,106 @@ Profit: <span id="profit">$0</span>
 
 <script>
 
-/* STATE */
-let state = {
+/* ================= SAFE CORE ================= */
+
+const $ = (id)=>document.getElementById(id);
+
+function safeSet(id,value){
+const el = $(id);
+if(el) el.innerText = value;
+}
+
+/* ================= STATE ================= */
+
+const state = {
 balance:10000,
 profit:0,
 trades:0,
 wins:0,
-wallet:1234.56
+wallet:1234.56,
+premium:false
 };
 
-function update(){
-document.getElementById("balance").innerText = "$"+state.balance.toFixed(2);
-document.getElementById("profit").innerText = "$"+state.profit.toFixed(2);
-document.getElementById("trades").innerText = state.trades;
-document.getElementById("winrate").innerText =
-state.trades ? Math.round((state.wins/state.trades)*100)+"%" : "0%";
-document.getElementById("wallet").innerText = "$"+state.wallet.toFixed(2);
+/* ================= UI ================= */
+
+function render(){
+safeSet("balance","$"+state.balance.toFixed(2));
+safeSet("profit","$"+state.profit.toFixed(2));
+safeSet("trades",state.trades);
+safeSet("winrate", state.trades ? Math.round((state.wins/state.trades)*100)+"%" : "0%");
+safeSet("wallet","$"+state.wallet.toFixed(2));
 }
 
-/* GAME */
-let ball = document.getElementById("ball");
-let pos = 0;
-let speed = 0;
-let dragging = false;
-let startY = 0;
+/* ================= GAME ENGINE ================= */
 
-ball.addEventListener("mousedown",(e)=>{
+let ball, pos=0, speed=0, dragging=false, startY=0;
+
+function initGame(){
+
+ball = $("ball");
+
+ball.onmousedown = (e)=>{
 dragging=true;
 startY=e.clientY;
-});
+};
 
-document.addEventListener("mouseup",(e)=>{
+document.onmouseup = (e)=>{
 if(!dragging) return;
-speed = (startY - e.clientY) * 0.12;
-dragging=false;
-state.trades++;
-});
 
-function gameLoop(){
+speed = (startY - e.clientY)*0.12;
+dragging=false;
+
+state.trades++;
+};
+
+function loop(){
 
 pos += speed;
 speed -= 0.35;
 
-ball.style.bottom = pos + "px";
+ball.style.bottom = pos+"px";
 
-if(pos > 160){
+if(pos>160){
 
-let values = [0.5,1,2,3,4,5,6];
-let hit = values[Math.floor(Math.random()*values.length)];
+const zones=[0.5,1,2,3,4,5,6];
+const hit = zones[Math.floor(Math.random()*zones.length)];
 
 state.profit += hit;
 state.wallet += hit;
 state.wins++;
 
-document.getElementById("result").innerText =
-hit + "% ganado";
+safeSet("result", hit+"%");
 
-pos = 0;
-speed = 0;
+pos=0;
+speed=0;
 
-update();
+render();
 }
 
-requestAnimationFrame(gameLoop);
+requestAnimationFrame(loop);
 }
 
-gameLoop();
-
-/* NEWS */
-function unlock(){
-state.balance -= 17;
-document.getElementById("lock").style.display="none";
-update();
+loop();
 }
 
-/* GLOBE */
-let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
-let renderer = new THREE.WebGLRenderer({alpha:true});
+/* ================= GLOBE ================= */
+
+function initGlobe(){
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
+const renderer = new THREE.WebGLRenderer({alpha:true});
 
 renderer.setSize(360,220);
-document.getElementById("globe").appendChild(renderer.domElement);
+$("globe").appendChild(renderer.domElement);
 
-let globe = new THREE.Points(
+const globe = new THREE.Points(
 new THREE.SphereGeometry(1.5,32,32),
 new THREE.PointsMaterial({color:0x00ffcc,size:0.02})
 );
 
 scene.add(globe);
-camera.position.z = 3;
+camera.position.z=3;
 
 function animate(){
 requestAnimationFrame(animate);
@@ -283,8 +294,26 @@ renderer.render(scene,camera);
 }
 
 animate();
+}
 
-update();
+/* ================= NEWS ================= */
+
+function unlockNews(){
+state.balance -= 17;
+state.premium=true;
+$("lock").style.display="none";
+render();
+}
+
+/* ================= INIT ================= */
+
+function init(){
+render();
+initGame();
+initGlobe();
+}
+
+window.onload = init;
 
 </script>
 
