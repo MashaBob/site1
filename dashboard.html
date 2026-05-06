@@ -4,163 +4,137 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Capital AI PRO V7 FIXED</title>
+<title>Panel Pro Trader</title>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
-
 body{
 margin:0;
 font-family:Arial;
 background:#050914;
 color:#e6edf7;
-overflow:hidden;
 }
 
-.dashboard{
+.layout{
 display:grid;
-grid-template-columns:240px 1fr 420px;
+grid-template-columns:220px 1fr 380px;
 height:100vh;
-gap:10px;
-padding:10px;
-box-sizing:border-box;
 }
 
-/* SIDEBAR */
 .sidebar{
-background:#0c1324;
-border-radius:12px;
+background:#0b1220;
 padding:15px;
 }
 
-.nav{
+.menu{
 padding:10px;
-background:#101b33;
+background:#111b2e;
 margin-bottom:8px;
 border-radius:8px;
 cursor:pointer;
 }
 
-.nav:hover{background:#15264a}
-
-/* CENTER */
-.center{
+.main{
+padding:15px;
 display:flex;
 flex-direction:column;
 gap:10px;
 }
 
 .card{
-background:#0c1324;
+background:#0d1628;
 padding:12px;
 border-radius:12px;
 }
 
-/* RIGHT */
 .right{
+padding:15px;
 display:flex;
 flex-direction:column;
 gap:10px;
 }
 
 .widget{
-background:#0c1324;
+background:#0d1628;
 padding:12px;
 border-radius:12px;
 }
 
 /* GAME */
-.gameArea{
-position:relative;
-height:220px;
+.gameBox{
+height:200px;
 background:#08101f;
 border-radius:12px;
+position:relative;
 overflow:hidden;
 }
 
 .ball{
-position:absolute;
-width:16px;
-height:16px;
-border-radius:50%;
+width:18px;
+height:18px;
 background:#00ffcc;
-left:50%;
+border-radius:50%;
+position:absolute;
 bottom:10px;
+left:50%;
 transform:translateX(-50%);
 }
 
-/* NEWS */
-.news{
-position:relative;
-padding:10px;
-border-radius:10px;
-background:#101b33;
-overflow:hidden;
-}
-
-.lockOverlay{
+/* NEWS LOCK */
+.lock{
 position:absolute;
 inset:0;
+background:rgba(0,0,0,0.7);
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-background:rgba(0,0,0,0.65);
-text-align:center;
 }
 
-.lockOverlay button{
+.lock button{
 margin-top:10px;
-padding:6px;
+padding:8px;
 background:#00ffcc;
 border:none;
 border-radius:8px;
 cursor:pointer;
 }
 
-.green{color:#00ffcc}
-
-.small{font-size:12px;opacity:0.7}
-
-table{width:100%;font-size:12px}
-td{padding:4px}
-
+/* GLOBE */
+#globe{
+height:220px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="dashboard">
+<div class="layout">
 
-<!-- SIDEBAR -->
+<!-- LEFT -->
 <div class="sidebar">
 <h3>PANEL PRO</h3>
-
-<div class="nav">Dashboard</div>
-<div class="nav">Wallet</div>
-<div class="nav">Markets</div>
-<div class="nav">Settings</div>
+<div class="menu">Dashboard</div>
+<div class="menu">Wallet</div>
+<div class="menu">Markets</div>
+<div class="menu">Settings</div>
 </div>
 
 <!-- CENTER -->
-<div class="center">
+<div class="main">
 
 <div class="card">
 <h2>Hola Trader 👋</h2>
 Saldo: <b id="balance">$10,000</b><br>
-ROI: <span class="green">+6% mensual</span>
+ROI: <span style="color:#00ffcc">+6% mensual</span>
 </div>
 
 <div class="card">
-<h4>📊 Statistics</h4>
-
-<table>
-<tr><td>Trades</td><td id="trades">0</td></tr>
-<tr><td>Win rate</td><td id="winrate">0%</td></tr>
-<tr><td>Profit</td><td class="green" id="profit">$0</td></tr>
-</table>
-
+<h4>📊 Estadísticas</h4>
+Trades: <span id="trades">0</span><br>
+Win rate: <span id="winrate">0%</span><br>
+Profit: <span id="profit">$0</span>
 </div>
 
 </div>
@@ -172,43 +146,36 @@ ROI: <span class="green">+6% mensual</span>
 <div class="widget">
 <h4>🎯 Skill Game</h4>
 
-<div class="gameArea">
+<div class="gameBox" id="game">
 <div class="ball" id="ball"></div>
 </div>
 
-<b id="result">Rendimiento: 0%</b>
-
+<div>Rendimiento: <b id="result">0%</b></div>
 </div>
 
 <!-- WALLET -->
 <div class="widget">
 <h4>Wallet</h4>
-<b class="green" id="wallet">$1,234.56</b>
+<b id="wallet">$1,234.56</b>
 </div>
 
 <!-- GLOBE -->
 <div class="widget">
-<h4>🌍 Globe</h4>
+<h4>🌍 Globo</h4>
 <div id="globe"></div>
 </div>
 
 <!-- NEWS -->
-<div class="widget">
-<h4>📰 Noticias Premium</h4>
+<div class="widget" style="position:relative">
+<h4>📰 Noticias</h4>
 
-<div class="news" id="news">
+<div>Bitcoin estable</div>
+<div>Ethereum en crecimiento</div>
 
-<div>Bitcoin estable en el mercado</div>
-<div>Ethereum crecimiento moderado</div>
-<div>Mercados globales mixtos</div>
-
-<div class="lockOverlay" id="lock">
+<div class="lock" id="lock">
 🔒 Premium bloqueado<br>
-<span class="small">17 MXN / mes</span>
-
-<button onclick="unlockNews()">Suscribirse</button>
-</div>
-
+<small>17 MXN / mes</small>
+<button onclick="unlock()">Desbloquear</button>
 </div>
 
 </div>
@@ -219,103 +186,87 @@ ROI: <span class="green">+6% mensual</span>
 
 <script>
 
-/* ================= STATE ENGINE ================= */
-
-const state = {
-balance: 10000,
-profit: 0,
-trades: 0,
-wins: 0,
-wallet: 1234.56
+/* STATE */
+let state = {
+balance:10000,
+profit:0,
+trades:0,
+wins:0,
+wallet:1234.56
 };
 
-function updateUI(){
-
-safe("balance").innerText = "$" + state.balance.toFixed(2);
-safe("profit").innerText = "$" + state.profit.toFixed(2);
-safe("trades").innerText = state.trades;
-safe("winrate").innerText = state.trades ? Math.round((state.wins/state.trades)*100) + "%" : "0%";
-safe("wallet").innerText = "$" + state.wallet.toFixed(2);
+function update(){
+document.getElementById("balance").innerText = "$"+state.balance.toFixed(2);
+document.getElementById("profit").innerText = "$"+state.profit.toFixed(2);
+document.getElementById("trades").innerText = state.trades;
+document.getElementById("winrate").innerText =
+state.trades ? Math.round((state.wins/state.trades)*100)+"%" : "0%";
+document.getElementById("wallet").innerText = "$"+state.wallet.toFixed(2);
 }
 
-function safe(id){
-return document.getElementById(id);
-}
-
-/* ================= GAME ================= */
-
-let ball = safe("ball");
+/* GAME */
+let ball = document.getElementById("ball");
 let pos = 0;
-let velocity = 0;
+let speed = 0;
 let dragging = false;
 let startY = 0;
 
 ball.addEventListener("mousedown",(e)=>{
-dragging = true;
-startY = e.clientY;
+dragging=true;
+startY=e.clientY;
 });
 
 document.addEventListener("mouseup",(e)=>{
 if(!dragging) return;
-
-let force = startY - e.clientY;
-velocity = force * 0.15;
-
-dragging = false;
+speed = (startY - e.clientY) * 0.12;
+dragging=false;
 state.trades++;
 });
 
-function loop(){
+function gameLoop(){
 
-pos += velocity;
-velocity -= 0.4;
+pos += speed;
+speed -= 0.35;
 
 ball.style.bottom = pos + "px";
 
 if(pos > 160){
 
-let zones = [0.5,1,2,3,4,5,6];
-let hit = zones[Math.floor(Math.random()*zones.length)];
+let values = [0.5,1,2,3,4,5,6];
+let hit = values[Math.floor(Math.random()*values.length)];
 
 state.profit += hit;
 state.wallet += hit;
-
 state.wins++;
 
-safe("result").innerText =
-"🎯 HIT: " + hit + "% | Total: " + state.profit.toFixed(2) + "%";
+document.getElementById("result").innerText =
+hit + "% ganado";
 
 pos = 0;
-velocity = 0;
+speed = 0;
 
-updateUI();
+update();
 }
 
-requestAnimationFrame(loop);
+requestAnimationFrame(gameLoop);
 }
 
-loop();
+gameLoop();
 
-/* ================= NEWS ================= */
-
-let premium = false;
-
-function unlockNews(){
-if(confirm("17 MXN / mes suscripción")){
-premium = true;
-safe("lock").style.display = "none";
-}
+/* NEWS */
+function unlock(){
+state.balance -= 17;
+document.getElementById("lock").style.display="none";
+update();
 }
 
-/* ================= GLOBE ================= */
-
+/* GLOBE */
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
-
 let renderer = new THREE.WebGLRenderer({alpha:true});
-renderer.setSize(420,240);
 
-safe("globe").appendChild(renderer.domElement);
+renderer.setSize(360,220);
+document.getElementById("globe").appendChild(renderer.domElement);
 
 let globe = new THREE.Points(
 new THREE.SphereGeometry(1.5,32,32),
@@ -333,8 +284,7 @@ renderer.render(scene,camera);
 
 animate();
 
-/* init */
-updateUI();
+update();
 
 </script>
 
