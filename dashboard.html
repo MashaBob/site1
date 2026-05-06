@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capital AI PRO</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+<style>
+
+/* =======================
+   BASE
+======================= */
+
+body{
+    margin:0;
+    font-family:Arial;
+    background:#070b14;
+    color:white;
+}
+
+/* GRID */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size:40px 40px;
+    z-index:-2;
+}
+
+/* LAYOUT */
+.app{
+    display:grid;
+    grid-template-columns:240px 1.2fr 1fr;
+    height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    padding:20px;
+    border-right:1px solid rgba(255,255,255,0.05);
+}
+
+.logo{
+    color:#00ffcc;
+    font-weight:bold;
+    margin-bottom:30px;
+}
+
+.nav div{
+    padding:12px;
+    margin-bottom:10px;
+    background:rgba(255,255,255,0.03);
+    border-radius:10px;
+}
+
+/* MAIN */
+.main{
+    padding:20px;
+}
+
+/* CARDS */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.card{
+    background:rgba(255,255,255,0.03);
+    padding:15px;
+    border-radius:15px;
+}
+
+/* =======================
+   WALLET (PRO)
+======================= */
+
+.wallet{
+    margin-top:15px;
+    padding:15px;
+    background:rgba(0,255,204,0.05);
+    border-radius:15px;
+}
+
+.wallet b{
+    color:#00ffcc;
+}
+
+/* =======================
+   CALCULATOR
+======================= */
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:10px;
+    border:none;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    background:#00ffcc;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* RESULT */
+.result{
+    margin-top:10px;
+    color:#00ffcc;
+}
+
+/* =======================
+   AI SIGNALS
+======================= */
+
+.signals{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.signal{
+    flex:1;
+    background:rgba(255,255,255,0.03);
+    padding:12px;
+    border-radius:12px;
+    text-align:center;
+}
+
+/* RIGHT */
+.right{
+    padding:20px;
+}
+
+#globe{
+    width:100%;
+    height:300px;
+}
+
+.verde{color:#00ffcc;}
+.rojo{color:#ff4d4d;}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+<div class="logo">CAPITAL AI PRO</div>
+
+<div class="nav">
+<div>Panel</div>
+<div>Cartera</div>
+<div>IA Señales</div>
+<div>Mercados</div>
+</div>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- CARDS -->
+<div class="cards">
+
+<div class="card">
+Saldo<br>
+<b id="balance">$1000</b>
+</div>
+
+<div class="card">
+Ganancia<br>
+<b id="profit" class="verde">$0</b>
+</div>
+
+<div class="card">
+ROI<br>
+<b class="verde">+6% mensual</b>
+</div>
+
+</div>
+
+<!-- WALLET -->
+<div class="wallet">
+<h3>💳 Wallet</h3>
+Disponible: <b id="wallet">$1000</b>
+</div>
+
+<!-- CALCULATOR -->
+<div class="card">
+
+<h3>Calculadora IA</h3>
+
+<input id="amount" placeholder="Capital">
+<input id="days" placeholder="Días">
+
+<button onclick="calc()">Calcular inversión</button>
+
+<div class="result" id="result">Resultado: $0</div>
+
+</div>
+
+<!-- AI SIGNALS -->
+<div class="signals">
+
+<div class="signal">BUY<br><b class="verde" id="buy">--</b></div>
+<div class="signal">HOLD<br><b id="hold">--</b></div>
+<div class="signal">SELL<br><b class="rojo" id="sell">--</b></div>
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<div id="globe"></div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =======================
+   WALLET SYSTEM
+======================= */
+
+let wallet = 1000;
+let profit = 0;
+
+/* =======================
+   CALC + CONNECT TO WALLET
+======================= */
+
+function calc(){
+
+let amount = parseFloat(document.getElementById("amount").value);
+let days = parseFloat(document.getElementById("days").value);
+
+let percent = 6;
+
+if(isNaN(amount) || isNaN(days)){
+document.getElementById("result").innerText="Introduce valores";
+return;
+}
+
+let result = amount * Math.pow((1 + percent/100), days);
+
+let gain = result - amount;
+
+/* update wallet */
+wallet += gain;
+profit += gain;
+
+document.getElementById("wallet").innerText = "$" + wallet.toFixed(2);
+document.getElementById("profit").innerText = "$" + profit.toFixed(2);
+
+document.getElementById("result").innerText =
+"Resultado: $" + result.toFixed(2);
+
+updateSignals();
+}
+
+/* =======================
+   AI SIGNAL ENGINE (SIMULATED)
+======================= */
+
+function updateSignals(){
+
+let r = Math.random();
+
+if(r > 0.6){
+document.getElementById("buy").innerText="98%";
+document.getElementById("hold").innerText="2%";
+document.getElementById("sell").innerText="0%";
+}
+else if(r > 0.3){
+document.getElementById("buy").innerText="55%";
+document.getElementById("hold").innerText="35%";
+document.getElementById("sell").innerText="10%";
+}
+else{
+document.getElementById("buy").innerText="20%";
+document.getElementById("hold").innerText="40%";
+document.getElementById("sell").innerText="40%";
+}
+}
+
+/* =======================
+   AUTO GROWTH (PRO SIMULATION)
+======================= */
+
+setInterval(()=>{
+wallet += wallet * 0.0005;
+document.getElementById("wallet").innerText = "$" + wallet.toFixed(2);
+},3000);
+
+/* =======================
+   GLOBE
+======================= */
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(75,1,0.1,1000);
+const renderer=new THREE.WebGLRenderer({alpha:true});
+
+renderer.setSize(300,300);
+document.getElementById("globe").appendChild(renderer.domElement);
+
+const geo=new THREE.SphereGeometry(1.2,32,32);
+const mat=new THREE.MeshBasicMaterial({wireframe:true,color:0x00ffcc});
+
+const globe=new THREE.Mesh(geo,mat);
+scene.add(globe);
+
+camera.position.z=3;
+
+function animate(){
+requestAnimationFrame(animate);
+globe.rotation.y+=0.002;
+renderer.render(scene,camera);
+}
+animate();
+
+</script>
+
+</body>
+</html>
