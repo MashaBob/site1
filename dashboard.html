@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Panel Trader PRO V7</title>
+<title>Panel Trader PRO V9.1</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
@@ -13,13 +14,14 @@
 body{
 margin:0;
 background:#050914;
-color:#e8eefc;
+color:white;
 font-family:Arial;
+overflow:hidden;
 }
 
 .layout{
 display:grid;
-grid-template-columns:240px 1fr 420px;
+grid-template-columns:240px 1fr 380px;
 height:100vh;
 }
 
@@ -34,7 +36,7 @@ padding:10px;
 margin-bottom:6px;
 background:#111b2e;
 border-radius:8px;
-color:#e8eefc;
+cursor:pointer;
 }
 
 /* CENTER */
@@ -65,7 +67,7 @@ padding:12px;
 border-radius:12px;
 }
 
-/* GAME */
+/* GAME + GLOBE */
 .game{
 height:240px;
 background:#08101f;
@@ -99,25 +101,24 @@ inset:0;
 background:rgba(0,0,0,0.8);
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
+justify-content:center;
 }
 
 .lock button{
 margin-top:10px;
-padding:6px;
-border:none;
 background:#00ffcc;
+border:none;
+padding:6px;
 border-radius:8px;
 cursor:pointer;
 }
 
-/* GLOBE */
+.green{color:#00ffcc}
+
 #globe{
 height:200px;
 }
-
-.green{color:#00ffcc}
 
 </style>
 </head>
@@ -140,15 +141,13 @@ height:200px;
 
 <div class="card">
 <h2>Hola Trader 👋</h2>
-Saldo: <b>$10,000</b><br>
-ROI: <span class="green">+6% mensual</span>
+Saldo: $10,000<br>
+Ganancia diaria: <b id="today">$0</b>
 </div>
 
 <div class="card">
 <h4>📊 Estadísticas</h4>
-Trades: <span id="trades">0</span><br>
-Ganancias: <span id="profit">$0</span><br>
-Winrate: <span id="winrate">0%</span>
+<canvas id="chart"></canvas>
 </div>
 
 </div>
@@ -156,30 +155,26 @@ Winrate: <span id="winrate">0%</span>
 <!-- RIGHT -->
 <div class="right">
 
-<!-- GAME -->
 <div class="widget">
-<h4>🎮 Skill Game</h4>
+<h4>🎯 Skill Game + Globo</h4>
 
-<div class="game" id="game">
+<div class="game">
 <div class="ball" id="ball"></div>
 </div>
 
 <p>Rendimiento: <b id="result">0%</b></p>
 </div>
 
-<!-- WALLET -->
 <div class="widget">
-<h4>Monedero</h4>
-<b>$1,234.56</b>
+<h4>📈 Stats</h4>
+Trades: <b id="trades">0</b>
 </div>
 
-<!-- GLOBE -->
 <div class="widget">
 <h4>🌍 Globo</h4>
 <div id="globe"></div>
 </div>
 
-<!-- NEWS -->
 <div class="widget">
 <h4>📰 Noticias</h4>
 
@@ -190,9 +185,8 @@ Winrate: <span id="winrate">0%</span>
 <div>Mercado global mixto</div>
 
 <div class="lock" id="lock">
-🔒 Contenido Premium<br>
-17 MXN / mes
-<button onclick="unlockNews()">Desbloquear</button>
+🔒 Premium 17 MXN/mes
+<button onclick="unlock()">Desbloquear</button>
 </div>
 
 </div>
@@ -209,27 +203,40 @@ window.onload = function(){
 
 /* ================= STATE ================= */
 
+let balance = 10000;
+let todayProfit = 0;
 let trades = 0;
-let profit = 0;
+let history = [10000];
 
-/* ================= STATS INIT ================= */
+/* ================= CHART ================= */
 
-function updateStats(){
-document.getElementById("trades").innerText = trades;
-document.getElementById("profit").innerText = "$" + profit.toFixed(2);
-document.getElementById("winrate").innerText =
-trades ? Math.round((profit/trades)*10) + "%" : "0%";
+const ctx = document.getElementById("chart");
+
+let chart = new Chart(ctx,{
+type:"line",
+data:{
+labels:["D1"],
+datasets:[{
+data:history,
+borderColor:"#00ffcc",
+tension:0.3
+}]
+},
+options:{
+plugins:{legend:{display:false}}
 }
+});
 
 /* ================= GAME ================= */
 
 let ball = document.getElementById("ball");
 
-let posY = 0;
-let speedY = 0;
+let y = 0;
+let speed = 0;
 
 let dragging = false;
 let startY = 0;
+let scored = false;
 
 ball.onmousedown = (e)=>{
 dragging = true;
@@ -239,39 +246,47 @@ startY = e.clientY;
 document.onmouseup = (e)=>{
 if(!dragging) return;
 
-speedY = (startY - e.clientY) * 0.12;
+speed = (startY - e.clientY) * 0.12;
 dragging = false;
 
 trades++;
+document.getElementById("trades").innerText = trades;
+
+scored = false;
 };
 
 function loop(){
 
-posY += speedY;
-speedY -= 0.28;
+y += speed;
+speed -= 0.25;
 
-/* stop falling too fast */
-if(posY < 0){
-posY = 0;
-speedY = 0;
-}
+if(y < 0){ y = 0; speed = 0; }
 
-ball.style.bottom = (20 + posY) + "px";
+ball.style.bottom = (20 + y) + "px";
 
 /* HIT */
-if(posY > 170){
+if(y > 180 && !scored){
 
-let vals = [0.5,1,2,3,4,5,6];
-let hit = vals[Math.floor(Math.random()*vals.length)];
+scored = true;
 
-profit += hit;
+const zones = [0.5,1,2,3,4,5,6];
+const hit = zones[Math.floor(Math.random()*zones.length)];
+
+todayProfit += hit;
+balance += hit;
 
 document.getElementById("result").innerText = hit + "%";
+document.getElementById("today").innerText = "$" + todayProfit.toFixed(2);
 
-posY = 0;
-speedY = 0;
+/* update chart */
+history.push(balance);
 
-updateStats();
+chart.data.labels.push("D"+history.length);
+chart.data.datasets[0].data = [...history];
+chart.update();
+
+y = 0;
+speed = 0;
 }
 
 requestAnimationFrame(loop);
@@ -285,7 +300,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 const renderer = new THREE.WebGLRenderer({alpha:true});
 
-renderer.setSize(420,200);
+renderer.setSize(380,200);
 document.getElementById("globe").appendChild(renderer.domElement);
 
 const globe = new THREE.Points(
@@ -306,7 +321,7 @@ animate();
 
 /* ================= NEWS ================= */
 
-window.unlockNews = function(){
+window.unlock = function(){
 document.getElementById("lock").style.display="none";
 };
 
