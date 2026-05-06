@@ -582,44 +582,80 @@ height="700">
 
 <!-- страны -->
 
-<div class="city" style="top:18%; left:36%">
-🇺🇸 USA
+<div class="city" id="usa" style="top:16%; left:38%">
+🇺🇸 Estados Unidos
 </div>
 
-<div class="city" style="top:28%; left:24%">
-🇨🇦 Canada
+<div class="city" id="canada" style="top:24%; left:24%">
+🇨🇦 Canadá
 </div>
 
-<div class="city" style="top:44%; left:18%">
-🇲🇽 Mexico
+<div class="city" id="mexico" style="top:42%; left:18%">
+🇲🇽 México
 </div>
 
-<div class="city" style="top:32%; left:62%">
-🇬🇧 UK
+<div class="city" id="brazil" style="top:72%; left:35%">
+🇧🇷 Brasil
 </div>
 
-<div class="city" style="top:42%; left:72%">
-🇫🇷 France
+<div class="city" id="argentina" style="top:84%; left:42%">
+🇦🇷 Argentina
 </div>
 
-<div class="city" style="top:52%; left:76%">
-🇩🇪 Germany
+<div class="city" id="uk" style="top:26%; left:54%">
+🇬🇧 Reino Unido
 </div>
 
-<div class="city" style="top:68%; left:68%">
-🇦🇺 Australia
+<div class="city" id="spain" style="top:38%; left:52%">
+🇪🇸 España
 </div>
 
-<div class="city" style="top:58%; left:90%">
+<div class="city" id="france" style="top:42%; left:60%">
+🇫🇷 Francia
+</div>
+
+<div class="city" id="germany" style="top:50%; left:66%">
+🇩🇪 Alemania
+</div>
+
+<div class="city" id="italy" style="top:58%; left:58%">
+🇮🇹 Italia
+</div>
+
+<div class="city" id="switzerland" style="top:48%; left:52%">
+🇨🇭 Suiza
+</div>
+
+<div class="city" id="dubai" style="top:56%; left:76%">
+🇦🇪 Dubái
+</div>
+
+<div class="city" id="india" style="top:50%; left:86%">
+🇮🇳 India
+</div>
+
+<div class="city" id="china" style="top:36%; left:92%">
+🇨🇳 China
+</div>
+
+<div class="city" id="hongkong" style="top:54%; left:94%">
 🇭🇰 Hong Kong
 </div>
 
-<div class="city" style="top:42%; left:95%">
-🇯🇵 Japan
+<div class="city" id="japan" style="top:28%; left:96%">
+🇯🇵 Japón
 </div>
 
-<div class="city" style="top:74%; left:52%">
-🇧🇷 Brazil
+<div class="city" id="singapore" style="top:68%; left:86%">
+🇸🇬 Singapur
+</div>
+
+<div class="city" id="australia" style="top:82%; left:74%">
+🇦🇺 Australia
+</div>
+
+<div class="city" id="southafrica" style="top:76%; left:56%">
+🇿🇦 Sudáfrica
 </div>
 
 </div>
@@ -629,9 +665,59 @@ height="700">
 </div>
 
 </div>
+<div class="chart">
 
+<script src="https://s3.tradingview.com/tv.js"></script>
+
+<div id="chart"></div>
+
+</div>
+<script>
 <script>
 
+const API_KEY = "DQBKGW2B7BDA8NC7";
+
+async function loadMarketData(){
+
+    try{
+
+        const usa = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=SPY&apikey=${API_KEY}`);
+        const usaData = await usa.json();
+
+        const germany = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=EWG&apikey=${API_KEY}`);
+        const germanyData = await germany.json();
+
+        const japan = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=EWJ&apikey=${API_KEY}`);
+        const japanData = await japan.json();
+
+        const brazil = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=EWZ&apikey=${API_KEY}`);
+        const brazilData = await brazil.json();
+
+        document.getElementById("usa").innerHTML =
+        "🇺🇸 EEUU " + usaData["Global Quote"]["05. price"];
+
+        document.getElementById("germany").innerHTML =
+        "🇩🇪 Alemania " + germanyData["Global Quote"]["05. price"];
+
+        document.getElementById("japan").innerHTML =
+        "🇯🇵 Japón " + japanData["Global Quote"]["05. price"];
+
+        document.getElementById("brazil").innerHTML =
+        "🇧🇷 Brasil " + brazilData["Global Quote"]["05. price"];
+
+    }catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+loadMarketData();
+
+setInterval(loadMarketData,60000);
+
+/* CANVAS */
 /* ===================================================== */
 /* CANVAS */
 /* ===================================================== */
@@ -836,6 +922,23 @@ animateValue("profit",0,9434,2000);
 
 animateValue("win",0,83,2000);
 
+/* TRADINGVIEW */
+
+new TradingView.widget({
+
+width:620,
+
+height:360,
+
+symbol:"BINANCE:BTCUSDT",
+
+interval:"15",
+
+theme:"dark",
+
+container_id:"chart"
+
+});
 </script>
 
 </body>
