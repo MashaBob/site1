@@ -4,35 +4,31 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Panel Pro Trader FIX</title>
+<title>Panel Trader PRO V10.5</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
 
-/* ✅ FIX MAIN BUG: allow scroll */
 body{
 margin:0;
 font-family:Arial;
 background:#050914;
 color:white;
-overflow-y:auto;   /* FIX */
-overflow-x:hidden;
+overflow:hidden;
 }
 
-/* layout FIX */
 .layout{
 display:grid;
 grid-template-columns:260px 1fr 380px;
-min-height:100vh;   /* FIX (was height 100vh) */
+height:100vh;
 }
 
 /* LEFT */
 .left{
 background:#0b1220;
 padding:15px;
-min-height:100vh;
 }
 
 .btn{
@@ -51,7 +47,6 @@ flex-direction:column;
 gap:10px;
 }
 
-/* KPIs */
 .kpis{
 display:flex;
 gap:10px;
@@ -71,19 +66,14 @@ padding:12px;
 border-radius:12px;
 }
 
-/* RIGHT FIX SCROLL */
+/* RIGHT */
 .right{
 padding:15px;
 display:flex;
 flex-direction:column;
 gap:10px;
-
-/* IMPORTANT */
-overflow-y:auto;
-max-height:100vh;
 }
 
-/* widgets */
 .widget{
 background:#0d1628;
 padding:12px;
@@ -127,7 +117,26 @@ border-radius:10px;
 position:relative;
 }
 
-/* WhatsApp FIX (was hidden below) */
+.lock{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,0.75);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+.lock button{
+margin-top:10px;
+background:#00ffcc;
+border:none;
+padding:6px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* WHATSAPP */
 .whatsapp{
 background:#25D366;
 color:black;
@@ -136,10 +145,8 @@ border-radius:10px;
 text-align:center;
 cursor:pointer;
 font-weight:bold;
-margin-top:10px;
 }
 
-/* small text */
 .small{
 font-size:12px;
 opacity:0.8;
@@ -165,9 +172,9 @@ opacity:0.8;
 <div class="center">
 
 <div class="kpis">
-<div class="kpi">💰 Saldo <br><b id="saldo">$10,000</b></div>
-<div class="kpi">📈 Ganancia diaria <br><b id="daily">$0</b></div>
-<div class="kpi">⚡ ROI <br><b>+4%</b></div>
+<div class="kpi">💰 Saldo<br><b id="saldo">$10,000</b></div>
+<div class="kpi">📈 Ganancia diaria<br><b id="daily">$0</b></div>
+<div class="kpi">⚡ ROI<br><b>máx 6%</b></div>
 </div>
 
 <div class="card">
@@ -179,8 +186,9 @@ opacity:0.8;
 <!-- RIGHT -->
 <div class="right">
 
+<!-- GAME -->
 <div class="widget">
-<h4>🎮 Game + Globo</h4>
+<h4>🎮 Skill Game + Globo</h4>
 
 <div class="gameBox">
 <div class="ball" id="ball"></div>
@@ -188,36 +196,38 @@ opacity:0.8;
 </div>
 
 <p>Rendimiento: <b id="rend">0%</b></p>
-
 </div>
 
-<!-- FIX: instruction stays small -->
+<!-- LEVEL SYSTEM -->
 <div class="widget">
+<h4>⭐ Nivel del inversor</h4>
+Nivel: <b id="level">2</b> / 30
+<br>
 <div class="small">
-💡 Arrastra el balón y lánzalo hacia el globo.  
-Cada impacto genera rendimiento.
+Progreso basado en actividad y constancia
 </div>
 </div>
 
-<!-- STATS -->
-<div class="widget">
-<h4>📊 Stats</h4>
-Trades: <b id="trades">0</b>
-</div>
-
-<!-- NEWS (visible always now) -->
+<!-- NEWS -->
 <div class="widget">
 <h4>📰 Noticias</h4>
 
 <div class="news">
+
 <div>Bitcoin estable</div>
-<div>Ethereum en alza</div>
-<div>Mercado mixto global</div>
+<div>Ethereum en crecimiento</div>
+
+<div class="lock" id="lock">
+🔒 Noticias Premium<br>
+17 MXN / mes
+<button onclick="subscribe()">Activar</button>
 </div>
 
 </div>
 
-<!-- WHATSAPP FIXED -->
+</div>
+
+<!-- WHATSAPP -->
 <div class="whatsapp" onclick="wa()">
 📞 Agendar llamada con asesor
 </div>
@@ -228,13 +238,16 @@ Trades: <b id="trades">0</b>
 
 <script>
 
-/* STATE */
+/* ================= STATE ================= */
+
 let balance = 10000;
 let daily = 0;
-let trades = 0;
+let level = 2;
 let history = [10000];
+let newsActive = false;
 
-/* CHART */
+/* ================= CHART ================= */
+
 const ctx = document.getElementById("chart");
 
 let chart = new Chart(ctx,{
@@ -250,7 +263,8 @@ tension:0.3
 options:{plugins:{legend:{display:false}}}
 });
 
-/* GAME */
+/* ================= GAME ================= */
+
 let ball = document.getElementById("ball");
 
 let y = 0;
@@ -267,11 +281,8 @@ startY = e.clientY;
 document.onmouseup = ()=>{
 if(!dragging) return;
 
-speed = 0.12 * (startY - event.clientY);
+speed = (startY - event.clientY) * 0.12;
 dragging = false;
-
-trades++;
-document.getElementById("trades").innerText = trades;
 
 scored = false;
 };
@@ -285,6 +296,7 @@ if(y < 0){ y = 0; speed = 0; }
 
 ball.style.bottom = (20 + y) + "px";
 
+/* HIT */
 if(y > 170 && !scored){
 
 scored = true;
@@ -294,10 +306,16 @@ let hit = [0.5,1,2,3,4,5,6][Math.floor(Math.random()*6)];
 daily += hit;
 balance += hit;
 
+/* level grows slowly */
+level += 0.1;
+if(level > 30) level = 30;
+
+document.getElementById("rend").innerText = hit + "%";
 document.getElementById("daily").innerText = "$" + daily.toFixed(2);
 document.getElementById("saldo").innerText = "$" + balance.toFixed(2);
-document.getElementById("rend").innerText = hit + "%";
+document.getElementById("level").innerText = level.toFixed(1);
 
+/* chart update */
 history.push(balance);
 chart.data.labels.push("D"+history.length);
 chart.data.datasets[0].data = [...history];
@@ -312,12 +330,26 @@ requestAnimationFrame(loop);
 
 loop();
 
-/* WHATSAPP */
+/* ================= NEWS (SOFT SYSTEM) ================= */
+
+function subscribe(){
+
+newsActive = true;
+document.getElementById("lock").style.display="none";
+
+/* small bonus, not aggressive */
+level += 5;
+document.getElementById("level").innerText = level.toFixed(1);
+}
+
+/* ================= WHATSAPP ================= */
+
 function wa(){
 window.open("https://wa.me/5210000000000","_blank");
 }
 
-/* GLOBE */
+/* ================= GLOBE ================= */
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75,1,0.1,1000);
 const renderer = new THREE.WebGLRenderer({alpha:true});
